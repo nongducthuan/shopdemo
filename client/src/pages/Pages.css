@@ -1,0 +1,197 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+.carousel-caption h1 {
+  font-size: 40px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-caption p {
+  padding-bottom: 150px;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+.carousel img {
+  max-width: 100%;
+  height: 500px;
+  object-fit: cover;
+  display: block;
+}
+
+.banner-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  transition: transform 0.4s ease-in-out;
+  cursor: pointer;
+}
+
+.banner-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.banner-item:hover img,
+.banner-item:active img {
+  transform: scale(1.08);
+}
+
+.banner-item::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.4s ease;
+  z-index: 1;
+}
+
+.banner-item:hover::after,
+.banner-item:active::after {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.banner-text {
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+  color: white;
+  z-index: 2;
+  transition: transform 0.4s ease;
+}
+
+.banner-item:hover .banner-text,
+.banner-item:active .banner-text {
+  transform: scale(1.05);
+}
+
+.lookbook-img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.lookbook-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  filter: brightness(0.9);
+}
+
+.policy-card {
+  background-color: #E5E5E5;
+  border-color: #D1D1D1;
+  color: #1A1A1A;
+  border-radius: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.policy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.policy-card .card-body {
+  padding: 1.5rem;
+}
+
+.policy-card .card-title {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer {
+  width: 100vw;
+  background-color: black;
+  border-top: 2px solid black;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.cart,
+.checkout,
+.order,
+.login,
+.register {
+  width: 100vw;
+}
+
+/* 🎯 Featured Slider */
+.featured-slider {
+  text-align: center;
+}
+
+.featured-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+}
+
+.featured-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.featured-card img {
+  height: auto;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+}
+
+.overlay h5 {
+  margin: 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #333;
+  transition: color 0.3s;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: #000;
+}
+
+@media (min-width: 769px) {
+
+  .login,
+  .register {
+    width: 25vw;
+  }
+
+  .cart,
+  .checkout,
+  .order {
+    width: 50vw;
+  }
+}
