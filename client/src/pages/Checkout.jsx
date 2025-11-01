@@ -104,19 +104,27 @@ export default function Checkout() {
                 className="list-group-item d-flex justify-content-between align-items-center"
               >
                 <div className="d-flex align-items-center">
-                  {p.color_image && (
-                    <img
-                      src={p.color_image}
-                      alt={p.color}
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        objectFit: "cover",
-                        marginRight: "1rem",
-                        borderRadius: "8px",
-                      }}
-                    />
-                  )}
+                  <img
+                    src={
+                      p.color_image
+                        ? p.color_image.startsWith("http")
+                          ? p.color_image
+                          : `http://localhost:5000${p.color_image}`
+                        : "http://localhost:5000/public/placeholder.jpg"
+                    }
+                    alt={p.color || "Sản phẩm"}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      objectFit: "cover",
+                      marginRight: "1rem",
+                      borderRadius: "8px",
+                    }}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "http://localhost:5000/public/placeholder.jpg";
+                    }}
+                  />
                   <div>
                     <strong>{p.name}</strong>
                     {p.size && <span> - Size: {p.size}</span>}
@@ -124,7 +132,9 @@ export default function Checkout() {
                     <div>Số lượng: {p.quantity ?? 1}</div>
                   </div>
                 </div>
-                <span>{formatCurrency(Number(p.price) * (p.quantity ?? 1))}</span>
+                <span>
+                  {formatCurrency(Number(p.price) * (p.quantity ?? 1))}
+                </span>
               </li>
             ))}
           </ul>
@@ -143,9 +153,7 @@ export default function Checkout() {
             />
           </div>
 
-          <h4 className="mb-3">
-            Tổng tiền: {formatCurrency(total)}
-          </h4>
+          <h4 className="mb-3">Tổng tiền: {formatCurrency(total)}</h4>
 
           <div className="mb-3">
             <button className="btn btn-success" onClick={handleCheckout}>
@@ -155,7 +163,9 @@ export default function Checkout() {
         </>
       )}
 
-      {message && <div className="alert alert-info mt-3 text-center">{message}</div>}
+      {message && (
+        <div className="alert alert-info mt-3 text-center">{message}</div>
+      )}
     </div>
   );
 }

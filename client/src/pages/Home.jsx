@@ -115,6 +115,55 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 🌟 Bộ sưu tập nổi bật */}
+      <section className="my-5 collection-banner-section" data-aos="fade-up">
+        <div className="container-fluid text-center">
+          <h2 className="section-title fw-bold text-center mb-4">
+            BỘ SƯU TẬP NỔI BẬT
+          </h2>
+          <div className="row g-3">
+            {/* Banner 1 */}
+            <div className="col-12 col-md-4 position-relative">
+              <img
+                src="/assets/images/banner-family.png"
+                alt="Áo phông cho cả gia đình"
+                className="img-fluid w-100 rounded-4 shadow"
+              />
+              <div className="banner-overlay">
+                <h3 className="fw-bold">ÁO PHÔNG CHO CẢ GIA ĐÌNH</h3>
+                <p>Khám phá bảng màu áo phông đa sắc cho mọi lứa tuổi!</p>
+              </div>
+            </div>
+
+            {/* Banner 2 */}
+            <div className="col-12 col-md-4 position-relative">
+              <img
+                src="/assets/images/banner-vietnam.png"
+                alt="Tự hào Việt Nam ơi"
+                className="img-fluid w-100 rounded-4 shadow"
+              />
+              <div className="banner-overlay">
+                <h3 className="fw-bold">TỰ HÀO VIỆT NAM ƠI</h3>
+                <p>Khoác lên mình màu cờ sắc áo - tôn vinh tinh thần dân tộc với thiết kế ý nghĩa, lan tỏa tình yêu nước đến mọi trái tim người Việt.</p>
+              </div>
+            </div>
+
+            {/* Banner 3 */}
+            <div className="col-12 col-md-4 position-relative">
+              <img
+                src="/assets/images/banner-homewear.png"
+                alt="Homewear"
+                className="img-fluid w-100 rounded-4 shadow"
+              />
+              <div className="banner-overlay">
+                <h3 className="fw-bold">HOMEWEAR</h3>
+                <p>Chạm vào sự thoải mái với loạt thiết kế êm nhẹ tinh tế – để từng phút giây ở nhà trở nên thật thư thái.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div className="home-container mx-5" data-aos="fade-up">
         <div className="banner-section py-4">
           <div className="container-fluid">

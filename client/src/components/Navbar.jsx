@@ -9,7 +9,6 @@ export default function Navbar() {
   const { cart } = useContext(CartContext);
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -17,15 +16,6 @@ export default function Navbar() {
     setUser(null);
     navigate("/");
     setMenuOpen(false);
-  };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
-      setMenuOpen(false);
-      setSearchTerm("");
-    }
   };
 
   // 🔹 Tổng số lượng sản phẩm trong giỏ
@@ -95,7 +85,6 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              {/* 🔹 Nếu là admin thì hiện nút Quản lý */}
               {user?.role === "admin" && (
                 <li>
                   <NavLink
@@ -117,29 +106,28 @@ export default function Navbar() {
           )}
         </ul>
 
-        <form className="search-form" onSubmit={handleSearchSubmit}>
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Tìm sản phẩm..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <button type="submit" className="search-btn">
+        {/* 🔍 Icon tìm kiếm và 🛍 Giỏ hàng kiểu minimal */}
+        <div className="nav-icons">
+          <div
+            className="nav-icon search-icon"
+            onClick={() => navigate("/search")}
+            title="Tìm kiếm"
+          >
             <i className="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </form>
-      </nav>
+          </div>
 
-      {/* 🔹 Icon giỏ hàng nổi */}
-      <div className="floating-cart-wrapper" onClick={() => navigate("/cart")}>
-        <button className="floating-cart-btn" aria-label="Giỏ hàng">
-          <i className="fa-solid fa-cart-shopping"></i>
-        </button>
-        {totalQuantity > 0 && (
-          <span className="cart-badge">{totalQuantity}</span>
-        )}
-      </div>
+          <div
+            className="nav-icon cart-icon"
+            onClick={() => navigate("/cart")}
+            title="Giỏ hàng"
+          >
+            <i className="fa-solid fa-bag-shopping"></i>
+            {totalQuantity > 0 && (
+              <span className="cart-badge-dot">{totalQuantity}</span>
+            )}
+          </div>
+        </div>
+      </nav>
     </div>
   );
 }
