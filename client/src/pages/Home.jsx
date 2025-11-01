@@ -6,6 +6,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const featuredItems = [
   { img: "/assets/images/featured1.png", title: "Áo thun" },
@@ -29,6 +31,12 @@ export default function Home() {
     API.get("/banners")
       .then((res) => setBanners(res.data))
       .catch((err) => console.error("Lỗi tải banner:", err));
+    AOS.init({
+      duration: 1000,
+      offset: 300,
+      once: false,
+      mirror: false
+    });
   }, []);
 
   return (
@@ -92,19 +100,22 @@ export default function Home() {
       </div>
 
       {/* 🛍 Danh sách sản phẩm */}
-      <div className="row g-3">
-        <h2 className="fw-bold mb-3 text-center">Danh sách sản phẩm</h2>
-        {products.map((p) => (
-          <div
-            key={p.id}
-            className="col-6 col-md-3 d-flex justify-content-center"
-          >
-            <ProductCard product={p} />
+      <section className="my-5" data-aos="fade-up">
+        <div className="container-fluid text-center">
+          <h2 className="section-title fw-bold mb-3">
+            DANH SÁCH SẢN PHẨM
+          </h2>
+          <div className="row g-3 justify-content-center">
+            {products.map((p) => (
+              <div key={p.id} className="col-6 col-md-3 d-flex justify-content-center">
+                <ProductCard product={p} />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      </section>
 
-      <div className="home-container mx-5">
+      <div className="home-container mx-5" data-aos="fade-up">
         <div className="banner-section py-4">
           <div className="container-fluid">
             <div className="row">
@@ -138,8 +149,8 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="my-5 featured-slider container">
-        <h2 className="fw-bold text-center mb-4">DÒNG HÀNG NỔI BẬT</h2>
+      <section className="my-5 featured-slider container" data-aos="fade-up">
+        <h2 className="section-title fw-bold text-center mb-3">DÒNG HÀNG NỔI BẬT</h2>
         <Swiper
           modules={[Navigation]}
           spaceBetween={20}
@@ -171,36 +182,40 @@ export default function Home() {
       </section>
 
       {/* 👕 Lookbook */}
-      <section className="my-5">
-        <h2 className="fw-bold text-center mb-4">Lookbook</h2>
-        <div className="row g-3 justify-content-center">
-          <div className="col-11 col-md-3">
-            <img
-              src="https://www.rails.com/cdn/shop/files/msu24-lookbook-5_1920x.jpg?v=1713387507"
-              className="lookbook-img img-fluid rounded-3 shadow"
-              alt="Look 1"
-            />
-          </div>
-          <div className="col-11 col-md-3">
-            <img
-              src="https://www.initialfashion.com/uploads/attachments/cl1x3ldes1httasgxs98428yv-ps-20220225-initial-5914.full.jpg"
-              className="lookbook-img img-fluid rounded-3 shadow"
-              alt="Look 2"
-            />
-          </div>
-          <div className="col-11 col-md-3">
-            <img
-              src="https://www.westside.com/cdn/shop/articles/Untitled_design_-_2024-02-16T164143.113.png?v=1708088745&width=533"
-              className="lookbook-img img-fluid rounded-3 shadow"
-              alt="Look 3"
-            />
+      <section className="my-5" data-aos="fade-up">
+        <div className="container-fluid text-center">
+          <h2 className="section-title fw-bold mb-4">
+            LOOKBOOK GỢI Ý PHỐI ĐỒ
+          </h2>
+          <div className="row g-3 justify-content-center">
+            <div className="col-11 col-md-3">
+              <img
+                src="https://www.rails.com/cdn/shop/files/msu24-lookbook-5_1920x.jpg?v=1713387507"
+                className="lookbook-img img-fluid rounded-3 shadow"
+                alt="Look 1"
+              />
+            </div>
+            <div className="col-11 col-md-3">
+              <img
+                src="https://www.initialfashion.com/uploads/attachments/cl1x3ldes1httasgxs98428yv-ps-20220225-initial-5914.full.jpg"
+                className="lookbook-img img-fluid rounded-3 shadow"
+                alt="Look 2"
+              />
+            </div>
+            <div className="col-11 col-md-3">
+              <img
+                src="https://www.westside.com/cdn/shop/articles/Untitled_design_-_2024-02-16T164143.113.png?v=1708088745&width=533"
+                className="lookbook-img img-fluid rounded-3 shadow"
+                alt="Look 3"
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* 🎁 Chính sách ưu đãi */}
-      <section className="my-5 text-center">
-        <h2 className="fw-bold mb-4">Chính sách ưu đãi</h2>
+      <section className="my-5 text-center" data-aos="fade-up">
+        <h2 className="section-title fw-bold text-center mb-4">CHÍNH SÁCH ƯU ĐÃI</h2>
         <div className="row g-3 justify-content-center">
           <div className="col-11 col-md-3">
             <div className="card shadow-sm h-100 policy-card">
