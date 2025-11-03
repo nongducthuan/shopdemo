@@ -12,7 +12,8 @@ import Order from "./pages/Order";
 import Search from "./pages/Search";
 import ProductDetail from "./pages/ProductDetail";
 import AdminProductDetail from "./pages/AdminProductDetail";
-import Category from "./pages/Category"; // ✅ dòng này
+import Category from "./pages/Category";
+import './assets/css/theme.css';
 
 function App() {
   return (

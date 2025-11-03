@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import API from "../api.jsx";
-import "../pages/Pages.css";
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);

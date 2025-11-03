@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext.jsx";
 import API from "../api.jsx";
 import { useNavigate } from "react-router-dom";
-import "../pages/Pages.css";
 
 export default function Checkout() {
   const { cart, setCart } = useContext(CartContext);

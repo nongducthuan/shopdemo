@@ -203,9 +203,9 @@ INSERT INTO categories (name, parent_id) VALUES
 ('Unisex', NULL);
 
 INSERT INTO categories (name, parent_id) VALUES
-('Áo', 1), ('Quần', 1), ('Giày', 1), ('Phụ kiện', 1),
-('Áo', 2), ('Quần', 2), ('Váy', 2), ('Giày', 2), ('Phụ kiện', 2),
-('Áo', 3), ('Quần', 3), ('Phụ kiện', 3);
+('Áo', 1), ('Quần', 1), ('Giày', 1), 
+('Áo', 2), ('Quần', 2), ('Giày', 2),
+('Áo', 3), ('Quần', 3), ('Giày', 3);
 
 INSERT INTO products (name, description, price, image_url, stock, category_id)
 VALUES

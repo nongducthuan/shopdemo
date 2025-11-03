@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext.jsx";
 import { Link } from "react-router-dom";
 import API from "../api.jsx";
-import "../pages/Pages.css";
 
 export default function Cart() {
   const { cart, setCart, removeFromCart } = useContext(CartContext);
