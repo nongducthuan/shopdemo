@@ -5,8 +5,10 @@ async function getAllProducts() {
   const [rows] = await pool.query(`
     SELECT 
       p.*, 
+      c.name AS category_name,
       COALESCE(SUM(ps.stock), 0) AS total_stock
     FROM products p
+    LEFT JOIN categories c ON c.id = p.category_id
     LEFT JOIN product_colors pc ON pc.product_id = p.id
     LEFT JOIN product_sizes ps ON ps.color_id = pc.id
     GROUP BY p.id
@@ -16,19 +18,19 @@ async function getAllProducts() {
 }
 
 async function createProduct(product) {
-  const { name, description, price, image_url, gender, category } = product;
+  const { name, description, price, image_url, category_id } = product;
   const [result] = await pool.query(
-    "INSERT INTO products (name, description, price, image_url, gender, category) VALUES (?, ?, ?, ?, ?, ?)",
-    [name, description || null, price, image_url || null, gender, category]
+    "INSERT INTO products (name, description, price, image_url, category_id) VALUES (?, ?, ?, ?, ?)",
+    [name, description || null, price, image_url || null, category_id]
   );
   return result.insertId;
 }
 
 async function updateProduct(id, product) {
-  const { name, description, price, image_url, gender, category } = product;
+  const { name, description, price, image_url, category_id } = product;
   const [result] = await pool.query(
-    "UPDATE products SET name=?, description=?, price=?, image_url=?, gender=?, category=? WHERE id=?",
-    [name, description || null, price, image_url || null, gender, category, id]
+    "UPDATE products SET name=?, description=?, price=?, image_url=?, category_id=? WHERE id=?",
+    [name, description || null, price, image_url || null, category_id, id]
   );
   return result.affectedRows;
 }
@@ -44,12 +46,13 @@ async function deleteProduct(id) {
 }
 
 async function getProductById(id) {
-  // Lấy thông tin sản phẩm và tổng stock
   const [products] = await pool.query(`
     SELECT 
-      p.*,
+      p.*, 
+      c.name AS category_name,
       COALESCE(SUM(ps.stock), 0) AS total_stock
     FROM products p
+    LEFT JOIN categories c ON c.id = p.category_id
     LEFT JOIN product_colors pc ON pc.product_id = p.id
     LEFT JOIN product_sizes ps ON ps.color_id = pc.id
     WHERE p.id = ?
@@ -59,7 +62,6 @@ async function getProductById(id) {
   if (!products.length) return null;
   const product = products[0];
 
-  // Lấy màu + size + stock từng màu
   const [colorRows] = await pool.query(`
     SELECT 
       pc.id AS color_id,
@@ -73,32 +75,17 @@ async function getProductById(id) {
     GROUP BY pc.id
   `, [id]);
 
-  // Gắn size vào từng màu
-  const colors = [];
   for (const color of colorRows) {
     const [sizes] = await pool.query(`
-      SELECT 
-        id, 
-        size, 
-        stock 
-      FROM product_sizes 
+      SELECT id, size, stock
+      FROM product_sizes
       WHERE color_id = ?
       ORDER BY id
     `, [color.color_id]);
-
-    colors.push({
-      id: color.color_id,
-      color_name: color.color_name,
-      color_code: color.color_code,
-      image_url: color.image_url,
-      total_stock: color.total_stock,
-      sizes,
-    });
+    color.sizes = sizes;
   }
 
-  // Gắn toàn bộ màu vào sản phẩm
-  product.colors = colors;
-
+  product.colors = colorRows;
   return product;
 }
 
@@ -180,7 +167,7 @@ async function getAllOrders() {
   const [orders] = await pool.query(`
     SELECT 
       o.*, 
-      u.name as user_name, 
+      u.name AS user_name, 
       u.email 
     FROM orders o 
     JOIN users u ON o.user_id = u.id 
@@ -191,7 +178,7 @@ async function getAllOrders() {
     const [items] = await pool.query(`
       SELECT 
         oi.*, 
-        p.name as product_name 
+        p.name AS product_name 
       FROM order_items oi 
       JOIN products p ON oi.product_id = p.id 
       WHERE order_id = ?

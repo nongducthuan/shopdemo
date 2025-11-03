@@ -1,27 +1,27 @@
-/* --- RESET --- */
+/* ================== RESET ================== */
 body {
-  margin: 0;
   display: block;
   font-family: Arial, sans-serif;
-  padding-top: 150px;
+  margin: 0;
+  padding: 0;
 }
 
-/* --- NAVBAR CONTAINER --- */
+/* ================== NAVBAR CONTAINER ================== */
 .custom-navbar {
+  background-color: white;
   width: 100%;
-  background-color: #292421;
   padding: 0.5rem 1rem;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
+  transition: background-color 0.3s;
 }
 
-/* --- LOGO + HAMBURGER TOP ROW --- */
+/* ================== TOP ROW (LOGO + HAMBURGER) ================== */
 .navbar-top {
   display: flex;
   justify-content: space-between;
@@ -29,41 +29,36 @@ body {
   width: 100%;
 }
 
-/* --- BRAND LOGO --- */
+/* Logo / Brand */
 .navbar-brand {
   font-weight: bold;
   font-size: 1.2rem;
-  color: #ffffff;
+  color: black;
   text-decoration: none;
+  cursor: pointer;
   white-space: nowrap;
 }
 
-.navbar-brand:hover {
-  color: #ffffff !important;
-}
-
-/* --- HAMBURGER BUTTON --- */
+/* Hamburger (Mobile) */
 .hamburger {
   font-size: 1.8rem;
   background: none;
   border: none;
-  color: white;
+  color: black;
   cursor: pointer;
   display: block;
 }
 
-/* --- MENU --- */
+/* ================== NAVBAR MENU ================== */
 .navbar-menu {
   list-style: none;
   padding: 0;
   display: none;
-  flex-direction: column;
-  width: 100%;
-  background-color: #292421;
-  border-radius: 0 0 8px 8px;
-  transition: max-height 0.3s ease;
-  overflow: hidden;
-  margin: 5px 10px;
+  justify-content: center;
+  flex-direction: row;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .navbar-menu.show {
@@ -71,12 +66,12 @@ body {
 }
 
 .nav-link {
-  color: #ffffff;
+  color: black;
   text-decoration: none;
-  padding: 0.5rem 0;
   font-size: 1rem;
-  cursor: pointer;
+  padding: 0.5rem 0;
   width: 100%;
+  cursor: pointer;
 }
 
 .nav-link:hover,
@@ -84,77 +79,83 @@ body {
   color: #0d6efd;
 }
 
-.logout-btn {
-  background: none;
-  border: none;
-  color: #ffffff;
+/* ================== DROPDOWN ================== */
+.navbar-menu li.dropdown {
+  position: relative;
+  margin: 0 1rem;
+}
+
+.navbar-menu li.dropdown span {
+  justify-content: center;
   cursor: pointer;
-  font-size: 1rem;
+  display: block;
   padding: 0.5rem 0;
-  width: 100%;
-  text-align: left;
+  transition: color 0.2s;
 }
 
-.logout-btn:hover {
-  color: #000;
+.navbar-menu li.dropdown span:hover {
+  color: #0d6efd;
 }
 
-/* --- SEARCH FORM --- */
-.search-form {
-  display: flex;
-  width: 100%;
-  margin-top: 0.5rem;
-  max-width: 400px;
-}
-
-.search-input {
+.navbar-menu li.dropdown .dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  flex-direction: column;
   background-color: #fff;
-  color: #000;
-  flex: 1;
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px 0 0 4px;
-  outline: none;
-  font-size: 1rem;
+  min-width: 100px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1100;
+  border-radius: 6px;
+  padding: 5px 0;
 }
 
-.search-btn {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-left: none;
-  background-color: #444;
-  color: #ffffff;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-  font-size: 1rem;
+.navbar-menu li.dropdown:hover .dropdown-content {
+  display: flex;
 }
 
-.search-btn:hover {
-  background-color: #333;
-  border-color: #fff;
+.dropdown-content a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
 }
 
-/* --- ICON NHỎ GỌN KIỂU APPLE/UNIQLO --- */
+.dropdown-content a:hover {
+  background-color: #f0f0f0;
+  color: #0d6efd;
+}
+
+.dropdown-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* ================== ICONS ================== */
 .nav-icons {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  margin-right: 1rem;
+  gap: 1rem;
+  justify-content: space-around;
+  padding: 0.4rem 0;
 }
 
 .nav-icon {
   position: relative;
-  font-size: 1.3rem;
-  color: #fff;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .nav-icon:hover {
   transform: scale(1.1);
 }
 
-/* Badge tròn nhỏ ở góc trên phải icon */
+/* Badge tròn nhỏ ở góc icon */
 .cart-badge-dot {
   position: absolute;
   top: -6px;
@@ -171,7 +172,31 @@ body {
   justify-content: center;
 }
 
-/* --- DESKTOP STYLES --- */
+/* ================== SEARCH FORM ================== */
+.search-form {
+  display: flex;
+  width: 100%;
+  margin-top: 0.5rem;
+  max-width: 400px;
+}
+
+.search-btn {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-left: none;
+  background-color: #444;
+  color: black;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.search-btn:hover {
+  background-color: #333;
+  border-color: #fff;
+}
+
+/* ================== DESKTOP (≥769px) ================== */
 @media (min-width: 769px) {
   body {
     padding-top: 50px;
@@ -194,32 +219,29 @@ body {
   .navbar-menu {
     display: flex !important;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     background: none;
-    box-shadow: none;
-    border-radius: 0;
-    margin: 0 1rem;
+    border: none;
+    margin: 0;
     width: auto;
+    flex-grow: 1;
   }
 
-  .nav-link,
-  .logout-btn {
-    padding: 0;
-    margin: 0 0.75rem;
-    width: auto;
-    text-align: center;
-  }
-
-  .search-form {
+  .navbar-menu li.dropdown .dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-top: 0;
-    max-width: 300px;
   }
 
-  .card {
-    display: grid;
-    grid-template-columns: repeat(1, 1);
+  .nav-icons {
+    border-top: none;
+    justify-content: flex-end;
+    width: auto;
+    padding: 0;
+    gap: 1rem;
   }
-
-  /* .floating-cart-btn, .cart-badge {
-    display: none;
-  } */
 }

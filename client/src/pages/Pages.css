@@ -79,13 +79,13 @@ body {
 }
 
 .carousel-caption p {
-  padding-bottom: 150px;
+  padding-bottom: 25%;
   text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
 }
 
 .carousel img {
   max-width: 100%;
-  height: 500px;
+  height: 300px;
   object-fit: cover;
   display: block;
 }
@@ -301,6 +301,13 @@ body {
 }
 
 @media (min-width: 769px) {
+
+  .carousel img {
+    max-width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    display: block;
+  }
 
   .login,
   .register {

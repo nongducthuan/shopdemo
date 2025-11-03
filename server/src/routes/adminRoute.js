@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
+const categoryController = require('../controllers/categoryController');
 const { authenticateToken, requireAdmin } = require('../middleware/authMiddleware');
 
 // =================== PRODUCTS ===================
@@ -29,5 +30,12 @@ router.get('/banners', authenticateToken, requireAdmin, adminController.getBanne
 router.post('/banners', authenticateToken, requireAdmin, adminController.createBannerController);
 router.put('/banners/:id', authenticateToken, requireAdmin, adminController.updateBannerController);
 router.delete('/banners/:id', authenticateToken, requireAdmin, adminController.deleteBannerController);
+
+// =================== CATEGORIES ===================
+router.get('/categories', authenticateToken, requireAdmin, categoryController.getCategories);
+router.post('/categories', authenticateToken, requireAdmin, categoryController.createCategory);
+router.put('/categories/:id', authenticateToken, requireAdmin, categoryController.updateCategory);
+router.delete('/categories/:id', authenticateToken, requireAdmin, categoryController.deleteCategory);
+
 
 module.exports = router;

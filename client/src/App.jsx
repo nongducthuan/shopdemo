@@ -12,6 +12,7 @@ import Order from "./pages/Order";
 import Search from "./pages/Search";
 import ProductDetail from "./pages/ProductDetail";
 import AdminProductDetail from "./pages/AdminProductDetail";
+import Category from "./pages/Category"; // ✅ dòng này
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/category/:id" element={<Category />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

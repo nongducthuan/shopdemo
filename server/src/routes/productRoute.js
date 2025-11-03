@@ -4,6 +4,29 @@ const db = require("../db");
 const { getProducts } = require("../controllers/productController");
 const { getProductDetail } = require("../controllers/productDetailController");
 
+router.get("/representative", async (req, res) => {
+  const categoryId = req.query.category_id;
+  if (!categoryId) return res.status(400).json({ error: "Missing category_id" });
+
+  try {
+    const [rows] = await db.query(
+      `SELECT id, name, image_url 
+       FROM products 
+       WHERE category_id = ? 
+       ORDER BY id ASC 
+       LIMIT 1`,
+      [categoryId]
+    );
+
+    if (rows.length === 0) return res.status(404).json({ error: "No product found" });
+
+    res.json(rows[0]); // trả về JSON của 1 sản phẩm đại diện
+  } catch (err) {
+    console.error("❌ Lỗi fetch ảnh category:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // ✅ Lấy danh sách sản phẩm
 router.get("/", getProducts);
 
@@ -39,6 +62,4 @@ router.get("/:id/options", async (req, res) => {
   }
 });
 
-
-// ✅ Quan trọng — export router ra ngoài
 module.exports = router;

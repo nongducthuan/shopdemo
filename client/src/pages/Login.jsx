@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import API from "../api.jsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../pages/Pages.css";
 
@@ -16,7 +16,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Xóa lỗi cũ nếu có
+    setError("");
 
     try {
       const res = await API.post("/auth/login", form);
@@ -29,14 +29,10 @@ export default function Login() {
         return;
       }
 
-      // Lưu user và token vào localStorage
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
-
-      // Cập nhật AuthContext
       setUser(user);
 
-      // Điều hướng về trang chủ hoặc admin
       if (user.role === "admin") navigate("/admin");
       else navigate("/");
     } catch (err) {
@@ -48,6 +44,7 @@ export default function Login() {
   return (
     <div className="login container mt-4">
       <h2 className="mb-4 text-center">Đăng nhập</h2>
+
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <input
@@ -78,7 +75,16 @@ export default function Login() {
         </button>
       </form>
 
+      {/* 🔹 Hiển thị lỗi */}
       {error && <div className="alert alert-danger mt-3">{error}</div>}
+
+      {/* 🔹 Liên kết đăng ký */}
+      <div className="text-center mt-3">
+        <span>Chưa có tài khoản? </span>
+        <Link to="/register" className="text-primary fw-semibold">
+          Đăng ký ngay
+        </Link>
+      </div>
     </div>
   );
 }

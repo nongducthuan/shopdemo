@@ -40,7 +40,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="container-fluid mt-4">
+    <div className="container-fluid">
       {/* 🖼 Carousel Banner */}
       <div id="heroCarousel" className="carousel slide mb-4" data-bs-ride="carousel">
         <div className="carousel-inner">
@@ -63,7 +63,7 @@ export default function Home() {
           ) : (
             <div className="carousel-item active">
               <img
-                src={`${backendUrl}/public/images/placeholder-banner.jpg`}
+                src={`${backendUrl}/public/images/placeholder-banner.png`}
                 className="d-block w-100 rounded-3"
                 alt="Default Banner"
               />

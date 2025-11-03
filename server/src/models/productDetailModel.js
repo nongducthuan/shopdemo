@@ -9,10 +9,13 @@ const pool = require('../db');
  */
 async function getProductDetails(productId) {
   // Lấy thông tin sản phẩm chính
-  const [productRows] = await pool.query(
-    'SELECT id, name, description, price, sale_percent, image_url, stock, gender, category FROM products WHERE id = ?',
-    [productId]
-  );
+  const [productRows] = await pool.query(`
+  SELECT p.id, p.name, p.description, p.price, p.sale_percent, 
+       p.image_url, p.stock, c.name AS category_name
+  FROM products p
+  LEFT JOIN categories c ON p.category_id = c.id
+  WHERE p.id = ?
+`, [productId]);
 
   if (productRows.length === 0) return null; // Không tìm thấy sản phẩm
 

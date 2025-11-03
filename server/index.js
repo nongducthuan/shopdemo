@@ -8,6 +8,7 @@ const productsRouter = require('./src/routes/productRoute');
 const authRouter = require('./src/routes/authRoute');
 const ordersRouter = require('./src/routes/orderRoute');
 const adminRouter = require('./src/routes/adminRoute');
+const categoryRouter = require('./src/routes/categoryRoute');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/products', productsRouter);
 app.use('/auth', authRouter);
 app.use('/orders', ordersRouter);
 app.use('/admin', adminRouter);
+app.use('/categories', categoryRouter); 
 
 // ✅ Public route cho banners (frontend dùng)
 app.get('/banners', async (req, res) => {
