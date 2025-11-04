@@ -203,22 +203,30 @@ INSERT INTO categories (name, parent_id) VALUES
 ('Unisex', NULL);
 
 INSERT INTO categories (name, parent_id) VALUES
-('Áo', 1), ('Quần', 1), ('Giày', 1), 
-('Áo', 2), ('Quần', 2), ('Giày', 2),
-('Áo', 3), ('Quần', 3), ('Giày', 3);
-
-INSERT INTO products (name, description, price, image_url, stock, category_id)
-VALUES
-('Áo sơ mi nam', 'Áo Sơ Mi Không Cần Ủi Dáng Ôm', 150000, '/public/images/ao-so-mi-nam-white.png', 50, 4),
-('Quần chino nam', 'Quần Chino Dáng Slim Fit', 320000, '/public/images/quan-chino-nam-beige.png', 40, 5),
-('Áo sơ mi nữ', 'Áo Sơ Mi Vải Linen Cao Cấp', 280000, '/public/images/ao-so-mi-nu-white.png', 30, 9),
-('Quần dài gear nữ', 'Quần Vải Mỏng, Mềm Mại', 450000, '/public/images/quan-dai-gear-nu-beige.png', 25, 10);
+('Áo', 1), ('Quần', 1),
+('Áo', 2), ('Quần', 2), 
+('Áo', 3), ('Quần', 3);
 
 INSERT INTO banners (image_url, title, subtitle) VALUES
 ('/public/images/banner1.png', 'Chào mừng đến Clothing Shop', 'Bộ sưu tập mới nhất đã có mặt – Giảm giá đến 50% hôm nay!'),
 ('/public/images/banner2.png', 'Phong cách mới mỗi ngày', 'Khám phá các mẫu áo quần hot trend'),
 ('/public/images/banner3.png', 'Hàng mới về mỗi tuần', 'Cập nhật liên tục – đừng bỏ lỡ xu hướng mới nhất'),
 ('/public/images/banner4.png', 'Ưu đãi đặc biệt cuối tuần', 'Giảm thêm 20% cho đơn hàng đầu tiên – Mua ngay hôm nay!');
+
+INSERT INTO products (name, description, price, image_url, stock, category_id)
+VALUES
+('Áo sơ mi nam', 'Áo Sơ Mi Không Cần Ủi Dáng Ôm', 150000, '/public/images/ao-so-mi-nam-white.png', 50, 4),
+('Quần chino nam', 'Quần Chino Dáng Slim Fit', 320000, '/public/images/quan-chino-nam-beige.png', 40, 5),
+('Áo sơ mi nữ', 'Áo Sơ Mi Vải Linen Cao Cấp', 280000, '/public/images/ao-so-mi-nu-white.png', 30, 6),
+('Quần dài gear nữ', 'Quần Vải Mỏng, Mềm Mại', 450000, '/public/images/quan-dai-gear-nu-beige.png', 25, 7),
+('Áo phông unisex', 'Áo phông đơn giản, phù hợp cả nam và nữ', 200000, '/public/images/ao-phong-unisex.png', 60, 8), 
+('Quần short unisex', 'Quần short thoải mái cho cả nam và nữ', 250000, '/public/images/quan-short-unisex.png', 40, 9),
+('Áo hoodie nam', 'Áo Sơ Mi Không Cần Ủi Dáng Ôm', 150000, '/public/images/ao-hoodie-nam-green.png', 50, 4),
+('Quần jean nam', 'Quần Chino Dáng Slim Fit', 320000, '/public/images/quan-jean-nam-light-blue.png', 40, 5),
+('Áo thun cổ tròn nữ', 'Áo Sơ Mi Vải Linen Cao Cấp', 280000, '/public/images/ao-thun-co-tron-nu-navy.png', 30, 6),
+('Quần dệt kim nữ', 'Quần Vải Mỏng, Mềm Mại', 450000, '/public/images/quan-det-kim-nu-khaki.png', 25, 7),
+('Áo phông unisex', 'Áo phông đơn giản, phù hợp cả nam và nữ', 200000, '/public/images/ao-phong-unisex.png', 60, 8), 
+('Quần short unisex', 'Quần short thoải mái cho cả nam và nữ', 250000, '/public/images/quan-short-unisex.png', 40, 9);
 
 INSERT INTO product_colors (product_id, color_name, color_code, image_url) VALUES
 (1, 'Trắng', '#FFFFFF', '/public/images/ao-so-mi-nam-white.png'),
@@ -228,7 +236,23 @@ INSERT INTO product_colors (product_id, color_name, color_code, image_url) VALUE
 (3, 'Trắng', '#FFFFFF', '/public/images/ao-so-mi-nu-white.png'),
 (3, 'Xanh lá', '#008000', '/public/images/ao-so-mi-nu-green.png'),
 (4, 'Be', '#F5F5DC', '/public/images/quan-dai-gear-nu-beige.png'),
-(4, 'Xanh đậm', '#0A3D3B', '/public/images/quan-dai-gear-nu-green.png');
+(4, 'Xanh đậm', '#0A3D3B', '/public/images/quan-dai-gear-nu-green.png'),
+(5, 'Trắng', '#FFFFFF', '/public/images/ao-phong-unisex-white.png'),
+(5, 'Đen', '#000000', '/public/images/ao-phong-unisex-black.png'),
+(6, 'Xám', '#808080', '/public/images/quan-short-unisex-gray.png'),
+(6, 'Đen', '#000000', '/public/images/quan-short-unisex-black.png'),
+(7, 'Xanh lá', '#6f7c6b', '/public/images/ao-hoodie-nam-green.png'),
+(7, 'Đỏ', '#d74d55', '/public/images/ao-hoodie-nam-red.png'),
+(8, 'Xanh trắng', '#e5ecf6', '/public/images/quan-jean-nam-light-blue.png'),
+(8, 'Xám đậm', '#232227', '/public/images/quan-jean-nam-dark-gray.png'),
+(9, 'Xanh da trời', '#dce2f0', '/public/images/ao-thun-co-tron-nu-blue.png'),
+(9, 'Xanh navy', '#2b3b5d', '/public/images/ao-thun-co-tron-nu-navy.png'),
+(10, 'Be', '#b6a498', '/public/images/quan-det-kim-nu-khaki.png'),
+(10, 'Xám', '#515055', '/public/images/quan-det-kim-nu-gray.png'),
+(11, 'Trắng', '#FFFFFF', '/public/images/ao-phong-unisex-white-2.png'),
+(11, 'Đen', '#000000', '/public/images/ao-phong-unisex-black-2.png'),
+(12, 'Xám', '#808080', '/public/images/quan-short-unisex-gray-2.png'),
+(12, 'Đen', '#000000', '/public/images/quan-short-unisex-black-2.png');
 
 INSERT INTO product_sizes (color_id, size, stock, extra_price) VALUES
 (1, 'S', 10, 0),(1, 'M', 20, 0),(1, 'L', 15, 0),
@@ -238,4 +262,20 @@ INSERT INTO product_sizes (color_id, size, stock, extra_price) VALUES
 (5, 'S', 10, 0),(5, 'M', 8, 0),(5, 'L', 5, 0),
 (6, 'S', 12, 0),(6, 'M', 10, 0),(6, 'L', 6, 0),
 (7, 'S', 7, 0),(7, 'M', 14, 0),(7, 'L', 9, 0),
-(8, 'S', 6, 0),(8, 'M', 12, 0),(8, 'L', 8, 0);
+(8, 'S', 6, 0),(8, 'M', 12, 0),(8, 'L', 8, 0),
+(9, 'S', 15, 0), (9, 'M', 20, 0), (9, 'L', 10, 0),  
+(10, 'S', 12, 0), (10, 'M', 18, 0), (10, 'L', 10, 0), 
+(11, 'S', 10, 0), (11, 'M', 15, 0), (11, 'L', 12, 0), 
+(12, 'S', 8, 0), (12, 'M', 12, 0), (12, 'L', 10, 0),
+(13, 'S', 10, 0), (13, 'M', 20, 0), (13, 'L', 15, 0),
+(14, 'S', 8, 0), (14, 'M', 18, 0), (14, 'L', 12, 0),
+(15, 'S', 8, 0), (15, 'M', 15, 0), (15, 'L', 12, 0),
+(16, 'S', 6, 0), (16, 'M', 12, 0), (16, 'L', 10, 0),
+(17, 'S', 10, 0), (17, 'M', 15, 0), (17, 'L', 10, 0),
+(18, 'S', 8, 0), (18, 'M', 14, 0), (18, 'L', 12, 0),
+(19, 'S', 7, 0), (19, 'M', 14, 0), (19, 'L', 10, 0),
+(20, 'S', 5, 0), (20, 'M', 10, 0), (20, 'L', 8, 0),
+(21, 'S', 10, 0), (21, 'M', 15, 0), (21, 'L', 12, 0),
+(22, 'S', 8, 0), (22, 'M', 12, 0), (22, 'L', 10, 0),
+(23, 'S', 12, 0), (23, 'M', 10, 0), (23, 'L', 8, 0),
+(24, 'S', 10, 0), (24, 'M', 14, 0), (24, 'L', 10, 0);

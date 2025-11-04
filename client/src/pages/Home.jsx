@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../api";
-import ProductCard from "../components/ProductCard";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -19,14 +16,10 @@ const featuredItems = [
 ];
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
   const backendUrl = "http://localhost:5000";
 
   useEffect(() => {
-    API.get("/products")
-      .then((res) => setProducts(res.data))
-      .catch((err) => console.error("Lỗi tải sản phẩm:", err));
     API.get("/banners")
       .then((res) => setBanners(res.data))
       .catch((err) => console.error("Lỗi tải banner:", err));
@@ -97,22 +90,6 @@ export default function Home() {
           </>
         )}
       </div>
-
-      {/* 🛍 Danh sách sản phẩm */}
-      <section className="my-5" data-aos="fade-up">
-        <div className="container-fluid text-center">
-          <h2 className="section-title fw-bold mb-3">
-            DANH SÁCH SẢN PHẨM
-          </h2>
-          <div className="row g-3 justify-content-center">
-            {products.map((p) => (
-              <div key={p.id} className="col-6 col-md-3 d-flex justify-content-center">
-                <ProductCard product={p} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 🌟 Bộ sưu tập nổi bật */}
       <section className="my-5 collection-banner-section" data-aos="fade-up">
@@ -197,37 +174,7 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="my-5 featured-slider container" data-aos="fade-up">
-        <h2 className="section-title fw-bold text-center mb-3">DÒNG HÀNG NỔI BẬT</h2>
-        <Swiper
-          modules={[Navigation]}
-          spaceBetween={20}
-          slidesPerView={5}
-          navigation
-          loop={true}
-          breakpoints={{
-            320: { slidesPerView: 2 },
-            576: { slidesPerView: 3 },
-            768: { slidesPerView: 4 },
-            992: { slidesPerView: 5 },
-          }}
-        >
-          {featuredItems.map((item, idx) => (
-            <SwiperSlide key={idx}>
-              <div className="featured-card position-relative overflow-hidden rounded-4">
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="img-fluid w-100 rounded-4"
-                />
-                <div className="overlay">
-                  <h5 className="text-white fw-bold">{item.title}</h5>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
+      
 
       {/* 👕 Lookbook */}
       <section className="my-5" data-aos="fade-up">

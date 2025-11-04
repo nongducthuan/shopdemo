@@ -14,7 +14,6 @@ export default function Cart() {
     0
   );
 
-  // 🔹 Khi cart thay đổi, tải options (size + màu)
   useEffect(() => {
     const fetchOptions = async () => {
       const result = {};

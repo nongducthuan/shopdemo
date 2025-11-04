@@ -79,7 +79,6 @@ export default function Navbar() {
         {/* 🔹 Menu chính */}
         <ul className={`navbar-menu ${menuOpen ? "show" : ""}`}>
           {/* Nam */}
-          {/* Nam */}
           <li className="dropdown">
             <span>Nam</span>
             <div className="dropdown-content">
@@ -103,16 +102,6 @@ export default function Navbar() {
                 )}
                 Quần
               </NavLink>
-              <NavLink to="/category/6" onClick={() => setMenuOpen(false)}>
-                {categoryImages[6] && (
-                  <img
-                    src={`http://localhost:5000${categoryImages[6]}`}
-                    className="dropdown-img"
-                    alt="Giày nam"
-                  />
-                )}
-                Giày
-              </NavLink>
             </div>
           </li>
 
@@ -120,35 +109,25 @@ export default function Navbar() {
           <li className="dropdown">
             <span>Nữ</span>
             <div className="dropdown-content">
-              <NavLink to="/category/9" onClick={() => setMenuOpen(false)}>
-                {categoryImages[9] && (
+              <NavLink to="/category/6" onClick={() => setMenuOpen(false)}>
+                {categoryImages[6] && (
                   <img
-                    src={`http://localhost:5000${categoryImages[9]}`}
+                    src={`http://localhost:5000${categoryImages[6]}`}
                     className="dropdown-img"
                     alt="Áo nữ"
                   />
                 )}
                 Áo
               </NavLink>
-              <NavLink to="/category/10" onClick={() => setMenuOpen(false)}>
-                {categoryImages[10] && (
+              <NavLink to="/category/7" onClick={() => setMenuOpen(false)}>
+                {categoryImages[7] && (
                   <img
-                    src={`http://localhost:5000${categoryImages[10]}`}
+                    src={`http://localhost:5000${categoryImages[7]}`}
                     className="dropdown-img"
                     alt="Quần nữ"
                   />
                 )}
                 Quần
-              </NavLink>
-              <NavLink to="/category/11" onClick={() => setMenuOpen(false)}>
-                {categoryImages[11] && (
-                  <img
-                    src={`http://localhost:5000${categoryImages[11]}`}
-                    className="dropdown-img"
-                    alt="Giày nữ"
-                  />
-                )}
-                Giày
               </NavLink>
             </div>
           </li>
@@ -157,40 +136,25 @@ export default function Navbar() {
           <li className="dropdown">
             <span>Unisex</span>
             <div className="dropdown-content">
-              {/* Áo Unisex */}
-              <NavLink to="/category/12" onClick={() => setMenuOpen(false)}>
-                {categoryImages[12] && (
+              <NavLink to="/category/8" onClick={() => setMenuOpen(false)}>
+                {categoryImages[8] && (
                   <img
-                    src={`http://localhost:5000${categoryImages[12]}`}
+                    src={`http://localhost:5000${categoryImages[8]}`}
                     className="dropdown-img"
                     alt="Áo unisex"
                   />
                 )}
                 Áo
               </NavLink>
-
-              {/* Quần Unisex */}
-              <NavLink to="/category/13" onClick={() => setMenuOpen(false)}>
-                {categoryImages[13] && (
+              <NavLink to="/category/9" onClick={() => setMenuOpen(false)}>
+                {categoryImages[9] && (
                   <img
-                    src={`http://localhost:5000${categoryImages[13]}`}
+                    src={`http://localhost:5000${categoryImages[9]}`}
                     className="dropdown-img"
                     alt="Quần unisex"
                   />
                 )}
                 Quần
-              </NavLink>
-
-              {/* Giày Unisex */}
-              <NavLink to="/category/14" onClick={() => setMenuOpen(false)}>
-                {categoryImages[14] && (
-                  <img
-                    src={`http://localhost:5000${categoryImages[14]}`}
-                    className="dropdown-img"
-                    alt="Giày unisex"
-                  />
-                )}
-                Giày
               </NavLink>
             </div>
           </li>

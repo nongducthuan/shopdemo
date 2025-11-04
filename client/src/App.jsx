@@ -13,7 +13,7 @@ import Search from "./pages/Search";
 import ProductDetail from "./pages/ProductDetail";
 import AdminProductDetail from "./pages/AdminProductDetail";
 import Category from "./pages/Category";
-import './assets/css/theme.css';
+import './assets/style/style.css';
 
 function App() {
   return (

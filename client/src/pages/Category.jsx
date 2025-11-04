@@ -24,11 +24,11 @@ export default function CategoryPage() {
   if (loading) return <p className="text-center py-5">Đang tải sản phẩm...</p>;
 
   return (
-    <div className="category-page container-fluid text-center py-5">
+    <div className="category container-fluid text-center py-5">
       <h2 className="section-title fw-bold mb-4">Danh mục sản phẩm</h2>
       <div className="row g-3 justify-content-center">
         {products.map((p) => (
-          <div key={p.id} className="col-6 col-md-3 w-100 d-flex justify-content-center">
+          <div key={p.id} className="col-6 col-md-3 d-flex justify-content-center">
             <ProductCard product={p} />
           </div>
         ))}
