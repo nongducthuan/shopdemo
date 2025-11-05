@@ -215,18 +215,18 @@ INSERT INTO banners (image_url, title, subtitle) VALUES
 
 INSERT INTO products (name, description, price, image_url, stock, category_id)
 VALUES
-('Áo sơ mi nam', 'Áo Sơ Mi Không Cần Ủi Dáng Ôm', 150000, '/public/images/ao-so-mi-nam-white.png', 50, 4),
-('Quần chino nam', 'Quần Chino Dáng Slim Fit', 320000, '/public/images/quan-chino-nam-beige.png', 40, 5),
-('Áo sơ mi nữ', 'Áo Sơ Mi Vải Linen Cao Cấp', 280000, '/public/images/ao-so-mi-nu-white.png', 30, 6),
-('Quần dài gear nữ', 'Quần Vải Mỏng, Mềm Mại', 450000, '/public/images/quan-dai-gear-nu-beige.png', 25, 7),
-('Áo phông unisex', 'Áo phông đơn giản, phù hợp cả nam và nữ', 200000, '/public/images/ao-phong-unisex.png', 60, 8), 
-('Quần short unisex', 'Quần short thoải mái cho cả nam và nữ', 250000, '/public/images/quan-short-unisex.png', 40, 9),
-('Áo hoodie nam', 'Áo Sơ Mi Không Cần Ủi Dáng Ôm', 150000, '/public/images/ao-hoodie-nam-green.png', 50, 4),
-('Quần jean nam', 'Quần Chino Dáng Slim Fit', 320000, '/public/images/quan-jean-nam-light-blue.png', 40, 5),
-('Áo thun cổ tròn nữ', 'Áo Sơ Mi Vải Linen Cao Cấp', 280000, '/public/images/ao-thun-co-tron-nu-navy.png', 30, 6),
-('Quần dệt kim nữ', 'Quần Vải Mỏng, Mềm Mại', 450000, '/public/images/quan-det-kim-nu-khaki.png', 25, 7),
-('Áo phông unisex', 'Áo phông đơn giản, phù hợp cả nam và nữ', 200000, '/public/images/ao-phong-unisex.png', 60, 8), 
-('Quần short unisex', 'Quần short thoải mái cho cả nam và nữ', 250000, '/public/images/quan-short-unisex.png', 40, 9);
+('Áo sơ mi', 'Áo sơ mi không cần ủi dáng ôm', 150000, '/public/images/ao-so-mi-nam-white.png', 50, 4),
+('Quần chino', 'Quần chino dáng slim fit', 320000, '/public/images/quan-chino-nam-beige.png', 40, 5),
+('Áo sơ mi', 'Áo sơ mi vải linen cao cấp', 280000, '/public/images/ao-so-mi-nu-white.png', 30, 6),
+('Quần dài gear', 'Quần dài vải mỏng, mềm mại', 450000, '/public/images/quan-dai-gear-nu-beige.png', 25, 7),
+('Áo thun tay ngắn', 'Áo thun tay ngắn nhiều màu', 200000, '/public/images/ao-thun-tay-ngan-unisex-gray.png', 60, 8), 
+('Quần dài', 'Quần dài thoải mái cho cả nam và nữ', 250000, '/public/images/quan-dai-unisex-beige.png', 40, 9),
+('Áo hoodie', 'Áo hoodie nam chất liệu mềm mại, thoải mái', 150000, '/public/images/ao-hoodie-nam-green.png', 50, 4),
+('Quần jean', 'Quần jean nam dáng slim fit, co giãn nhẹ', 320000, '/public/images/quan-jean-nam-light-blue.png', 40, 5),
+('Áo thun', 'Áo thun cổ tròn nhiều màu', 280000, '/public/images/ao-thun-co-tron-nu-navy.png', 30, 6),
+('Quần dệt kim', 'Quần dệt kim vải gân có thể giặt máy', 450000, '/public/images/quan-det-kim-nu-khaki.png', 25, 7),
+('Áo thun tay dài', 'Áo thun tay dài nhiều màu', 200000, '/public/images/ao-thun-tay-dai-unisex-blue.png', 60, 8), 
+('Quần short', 'Quần short co giãn dáng slim fit', 250000, '/public/images/quan-short-unisex-white.png', 40, 9);
 
 INSERT INTO product_colors (product_id, color_name, color_code, image_url) VALUES
 (1, 'Trắng', '#FFFFFF', '/public/images/ao-so-mi-nam-white.png'),
@@ -237,10 +237,10 @@ INSERT INTO product_colors (product_id, color_name, color_code, image_url) VALUE
 (3, 'Xanh lá', '#008000', '/public/images/ao-so-mi-nu-green.png'),
 (4, 'Be', '#F5F5DC', '/public/images/quan-dai-gear-nu-beige.png'),
 (4, 'Xanh đậm', '#0A3D3B', '/public/images/quan-dai-gear-nu-green.png'),
-(5, 'Trắng', '#FFFFFF', '/public/images/ao-phong-unisex-white.png'),
-(5, 'Đen', '#000000', '/public/images/ao-phong-unisex-black.png'),
-(6, 'Xám', '#808080', '/public/images/quan-short-unisex-gray.png'),
-(6, 'Đen', '#000000', '/public/images/quan-short-unisex-black.png'),
+(5, 'Xám', '#c0c8d3', '/public/images/ao-thun-tay-ngan-unisex-gray.png'),
+(5, 'Xám đậm', '#474b4e', '/public/images/ao-thun-tay-ngan-unisex-dark-gray.png'),
+(6, 'Xanh lá', '#5a6151', '/public/images/quan-dai-unisex-green.png'),
+(6, 'Be', '#cab99f', '/public/images/quan-dai-unisex-beige.png'),
 (7, 'Xanh lá', '#6f7c6b', '/public/images/ao-hoodie-nam-green.png'),
 (7, 'Đỏ', '#d74d55', '/public/images/ao-hoodie-nam-red.png'),
 (8, 'Xanh trắng', '#e5ecf6', '/public/images/quan-jean-nam-light-blue.png'),
@@ -249,10 +249,10 @@ INSERT INTO product_colors (product_id, color_name, color_code, image_url) VALUE
 (9, 'Xanh navy', '#2b3b5d', '/public/images/ao-thun-co-tron-nu-navy.png'),
 (10, 'Be', '#b6a498', '/public/images/quan-det-kim-nu-khaki.png'),
 (10, 'Xám', '#515055', '/public/images/quan-det-kim-nu-gray.png'),
-(11, 'Trắng', '#FFFFFF', '/public/images/ao-phong-unisex-white-2.png'),
-(11, 'Đen', '#000000', '/public/images/ao-phong-unisex-black-2.png'),
-(12, 'Xám', '#808080', '/public/images/quan-short-unisex-gray-2.png'),
-(12, 'Đen', '#000000', '/public/images/quan-short-unisex-black-2.png');
+(11, 'Xanh đen', '#2c3546', '/public/images/ao-thun-tay-dai-unisex-blue.png'),
+(11, 'Xanh lá', '#b3b6af', '/public/images/ao-thun-tay-dai-unisex-green.png'),
+(12, 'Trắng', '#f1f0ee', '/public/images/quan-short-unisex-white.png'),
+(12, 'Xám', '#646b7d', '/public/images/quan-short-unisex-gray.png');
 
 INSERT INTO product_sizes (color_id, size, stock, extra_price) VALUES
 (1, 'S', 10, 0),(1, 'M', 20, 0),(1, 'L', 15, 0),
