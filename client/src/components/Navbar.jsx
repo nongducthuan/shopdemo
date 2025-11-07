@@ -13,17 +13,21 @@ export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [categoryImages, setCategoryImages] = useState({}); // { categoryId: image_url }
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [adminMenuOpen, setAdminMenuOpen] = useState(false);
 
   // Lấy ảnh đại diện sản phẩm cho từng category con
   useEffect(() => {
     const fetchCategoriesWithImages = async () => {
       try {
-        const parentIds = [1, 2, 3]; 
+        const parentIds = [1, 2, 3];
         const allCategories = [];
 
         // Lấy toàn bộ danh mục con
         for (const pid of parentIds) {
-          const res = await fetch(`http://localhost:5000/categories?parent_id=${pid}`);
+          const res = await fetch(
+            `http://localhost:5000/categories?parent_id=${pid}`
+          );
           const cats = await res.json();
           allCategories.push(...cats);
         }
@@ -57,7 +61,10 @@ export default function Navbar() {
   };
 
   const isHome = location.pathname === "/";
-  const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  const totalQuantity = cart.reduce(
+    (sum, item) => sum + (item.quantity || 1),
+    0
+  );
 
   return (
     <div className="container-fluid">
@@ -162,41 +169,138 @@ export default function Navbar() {
 
         {/* 🔹 Icon bar */}
         <div className="nav-icons">
-          <div className="nav-icon" title="Trang chủ" onClick={() => navigate("/")}>
+          <div
+            className="nav-icon"
+            title="Trang chủ"
+            onClick={() => navigate("/")}
+          >
             <i className="fa-solid fa-house"></i>
           </div>
 
-          <div className="nav-icon" title="Đơn hàng" onClick={() => navigate("/orders")}>
+          <div
+            className="nav-icon"
+            title="Đơn hàng"
+            onClick={() => navigate("/orders")}
+          >
             <i className="fa-solid fa-truck"></i>
           </div>
 
-          <div className="nav-icon" title="Tìm kiếm" onClick={() => navigate("/search")}>
+          <div
+            className="nav-icon"
+            title="Tìm kiếm"
+            onClick={() => navigate("/search")}
+          >
             <i className="fa-solid fa-magnifying-glass"></i>
           </div>
 
-          <div className="nav-icon" title="Giỏ hàng" onClick={() => navigate("/cart")}>
+          <div
+            className="nav-icon"
+            title="Giỏ hàng"
+            onClick={() => navigate("/cart")}
+          >
             <i className="fa-solid fa-bag-shopping"></i>
-            {totalQuantity > 0 && <span className="cart-badge-dot">{totalQuantity}</span>}
+            {totalQuantity > 0 && (
+              <span className="cart-badge-dot">{totalQuantity}</span>
+            )}
           </div>
 
           {user?.role === "admin" && (
-            <div className="nav-icon" title="Quản lý" onClick={() => navigate("/admin")}>
+            <div
+              className="nav-icon admin-icon"
+              onMouseEnter={() => setAdminMenuOpen(true)}
+              onMouseLeave={() => setAdminMenuOpen(false)}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate("/admin");
+                setAdminMenuOpen(false);
+              }}
+            >
               <i className="fa-solid fa-gear"></i>
+
+              {adminMenuOpen && (
+                <div
+                  className="user-dropdown"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div
+                    className="dropdown-item"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate("/admin/banner");
+                      setAdminMenuOpen(false);
+                    }}
+                  >
+                    Quản lý Banner
+                  </div>
+                  <div
+                    className="dropdown-item"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate("/admin/products");
+                      setAdminMenuOpen(false);
+                    }}
+                  >
+                    Quản lý Sản phẩm
+                  </div>
+                  <div
+                    className="dropdown-item"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate("/admin/orders");
+                      setAdminMenuOpen(false);
+                    }}
+                  >
+                    Quản lý Đơn Hàng
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
           <div
-            className="nav-icon"
-            title={user ? "Tài khoản" : "Đăng nhập / Đăng ký"}
-            onClick={() => {
-              if (user) {
-                if (window.confirm("Bạn có muốn đăng xuất không?")) handleLogout();
-              } else {
-                navigate("/login");
-              }
-            }}
+            className="nav-icon user-icon"
+            onMouseEnter={() => setUserMenuOpen(true)}
+            onMouseLeave={() => setUserMenuOpen(false)}
           >
             <i className="fa-solid fa-user"></i>
+
+            {/* Dropdown menu */}
+            {userMenuOpen && (
+              <div className="user-dropdown">
+                {user ? (
+                  <>
+                    <div
+                      className="dropdown-item"
+                      onClick={() => {
+                        navigate("/profile");
+                        setUserMenuOpen(false);
+                      }}
+                    >
+                      Thông tin cá nhân
+                    </div>
+                    <div
+                      className="dropdown-item"
+                      onClick={() => {
+                        handleLogout();
+                        setUserMenuOpen(false);
+                      }}
+                    >
+                      Đăng xuất
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    className="dropdown-item"
+                    onClick={() => {
+                      navigate("/login");
+                      setUserMenuOpen(false);
+                    }}
+                  >
+                    Đăng nhập
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </nav>

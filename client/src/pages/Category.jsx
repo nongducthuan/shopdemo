@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ProductCard from "../components/ProductCard"; // ✅ import component chung
-import API from "../api"; // ✅ dùng API giống Home (nếu bạn đã có axios instance)
+import ProductCard from "../components/ProductCard";
+import API from "../api"; 
 
 export default function CategoryPage() {
   const { id } = useParams(); // lấy id danh mục từ URL

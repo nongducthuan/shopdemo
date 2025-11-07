@@ -35,11 +35,6 @@ export default function Checkout() {
       return;
     }
 
-    if (!cart || cart.length === 0) {
-      setMessage("Giỏ hàng trống!");
-      return;
-    }
-
     try {
       const itemsPayload = cart.map((p) => {
         if (!p.size_id) throw new Error(`Sản phẩm "${p.name}" chưa chọn size`);
@@ -91,76 +86,70 @@ export default function Checkout() {
   return (
     <div className="checkout container mt-4">
       <h2 className="text-center">Thanh toán</h2>
+      <ul className="list-group mb-3">
+        {cart.map((p) => (
+          <li
+            key={p.id}
+            className="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <div className="d-flex align-items-center">
+              <img
+                src={
+                  p.color_image
+                    ? p.color_image.startsWith("http")
+                      ? p.color_image
+                      : `http://localhost:5000${p.color_image}`
+                    : "http://localhost:5000/public/placeholder.jpg"
+                }
+                alt={p.color || "Sản phẩm"}
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  objectFit: "cover",
+                  marginRight: "1rem",
+                  borderRadius: "8px",
+                }}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "http://localhost:5000/public/placeholder.jpg";
+                }}
+              />
+              <div>
+                <strong>{p.name}</strong>
+                {p.size && <span> - Size: {p.size}</span>}
+                {p.color && <span> - Màu: {p.color}</span>}
+                <div>Số lượng: {p.quantity ?? 1}</div>
+              </div>
+            </div>
+            <span>
+              {formatCurrency(Number(p.price) * (p.quantity ?? 1))}
+            </span>
+          </li>
+        ))}
+      </ul>
 
-      {cart.length === 0 ? (
-        <p className="text-center">Giỏ hàng trống</p>
-      ) : (
-        <>
-          <ul className="list-group mb-3">
-            {cart.map((p) => (
-              <li
-                key={p.id}
-                className="list-group-item d-flex justify-content-between align-items-center"
-              >
-                <div className="d-flex align-items-center">
-                  <img
-                    src={
-                      p.color_image
-                        ? p.color_image.startsWith("http")
-                          ? p.color_image
-                          : `http://localhost:5000${p.color_image}`
-                        : "http://localhost:5000/public/placeholder.jpg"
-                    }
-                    alt={p.color || "Sản phẩm"}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      objectFit: "cover",
-                      marginRight: "1rem",
-                      borderRadius: "8px",
-                    }}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "http://localhost:5000/public/placeholder.jpg";
-                    }}
-                  />
-                  <div>
-                    <strong>{p.name}</strong>
-                    {p.size && <span> - Size: {p.size}</span>}
-                    {p.color && <span> - Màu: {p.color}</span>}
-                    <div>Số lượng: {p.quantity ?? 1}</div>
-                  </div>
-                </div>
-                <span>
-                  {formatCurrency(Number(p.price) * (p.quantity ?? 1))}
-                </span>
-              </li>
-            ))}
-          </ul>
+      <div className="mb-3">
+        <label htmlFor="address" className="form-label">
+          Địa chỉ giao hàng
+        </label>
+        <input
+          type="text"
+          id="address"
+          className="form-control"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          placeholder="Nhập địa chỉ của bạn"
+        />
+      </div>
 
-          <div className="mb-3">
-            <label htmlFor="address" className="form-label">
-              Địa chỉ giao hàng
-            </label>
-            <input
-              type="text"
-              id="address"
-              className="form-control"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Nhập địa chỉ của bạn"
-            />
-          </div>
+      <h4 className="mb-3">Tổng tiền: {formatCurrency(total)}</h4>
 
-          <h4 className="mb-3">Tổng tiền: {formatCurrency(total)}</h4>
+      <div className="mb-3">
+        <button className="btn btn-success" onClick={handleCheckout}>
+          Đặt hàng
+        </button>
+      </div>
 
-          <div className="mb-3">
-            <button className="btn btn-success" onClick={handleCheckout}>
-              Đặt hàng
-            </button>
-          </div>
-        </>
-      )}
 
       {message && (
         <div className="alert alert-info mt-3 text-center">{message}</div>

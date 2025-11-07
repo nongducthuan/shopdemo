@@ -9,7 +9,7 @@ export default function ProductCard({ product }) {
 
   return (
     <div
-      className="card product-card h-100 border-0 shadow-sm"
+      className="card product-card border-0 shadow-sm"
       onClick={() => navigate(`/products/${product.id}`)}
     >
       <div className="position-relative overflow-hidden">

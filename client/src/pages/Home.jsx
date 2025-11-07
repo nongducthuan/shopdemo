@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../api";
-import "swiper/css";
-import "swiper/css/navigation";
+import ProductCard from "../components/ProductCard";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -16,10 +15,14 @@ const featuredItems = [
 ];
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
   const backendUrl = "http://localhost:5000";
 
   useEffect(() => {
+    API.get("/products")
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.error("Lỗi tải sản phẩm:", err));
     API.get("/banners")
       .then((res) => setBanners(res.data))
       .catch((err) => console.error("Lỗi tải banner:", err));
@@ -173,8 +176,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      
 
       {/* 👕 Lookbook */}
       <section className="my-5" data-aos="fade-up">

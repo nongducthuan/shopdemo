@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Navbar from "./components/Navbar";
@@ -13,7 +14,10 @@ import Search from "./pages/Search";
 import ProductDetail from "./pages/ProductDetail";
 import AdminProductDetail from "./pages/AdminProductDetail";
 import Category from "./pages/Category";
-import './assets/style/style.css';
+import BannerManager from "./pages/BannerManager";
+import ProductManager from "./pages/ProductManager";
+import OrderManager from "./pages/OrderManager"; 
+import "./assets/style/style.css";
 
 function App() {
   return (
@@ -21,6 +25,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
+          {/* Trang người dùng */}
           <Route path="/" element={<Home />} />
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/category/:id" element={<Category />} />
@@ -30,6 +35,8 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders" element={<Order />} />
           <Route path="/search" element={<Search />} />
+
+          {/* Trang admin chính */}
           <Route
             path="/admin"
             element={
@@ -38,6 +45,38 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Quản lý Banner */}
+          <Route
+            path="/admin/banner"
+            element={
+              <ProtectedRoute roleRequired="admin">
+                <BannerManager />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Quản lý Sản phẩm */}
+          <Route
+            path="/admin/products"
+            element={
+              <ProtectedRoute roleRequired="admin">
+                <ProductManager />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Quản lý Đơn hàng */}
+          <Route
+            path="/admin/orders"
+            element={
+              <ProtectedRoute roleRequired="admin">
+                <OrderManager />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Trang chi tiết sản phẩm trong admin */}
           <Route
             path="/admin/products/:id"
             element={
