@@ -10,9 +10,8 @@ export default function Navbar() {
   const { cart } = useContext(CartContext);
   const navigate = useNavigate();
   const location = useLocation();
-
   const [menuOpen, setMenuOpen] = useState(false);
-  const [categoryImages, setCategoryImages] = useState({}); // { categoryId: image_url }
+  const [categoryImages, setCategoryImages] = useState({});
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
 
@@ -20,35 +19,41 @@ export default function Navbar() {
   useEffect(() => {
     const fetchCategoriesWithImages = async () => {
       try {
-        const parentIds = [1, 2, 3];
-        const allCategories = [];
-
-        // Lấy toàn bộ danh mục con
-        for (const pid of parentIds) {
-          const res = await fetch(
-            `http://localhost:5000/categories?parent_id=${pid}`
-          );
-          const cats = await res.json();
-          allCategories.push(...cats);
-        }
-
+        const allCategories = [
+          { id: 4, name: "Áo nam" },
+          { id: 5, name: "Quần nam" },
+          { id: 6, name: "Áo nữ" },
+          { id: 7, name: "Quần nữ" },
+          { id: 8, name: "Áo unisex" },
+          { id: 9, name: "Quần unisex" }
+        ];
         // Lấy ảnh đại diện cho từng category con
         const entries = await Promise.all(
           allCategories.map(async (cat) => {
-            const res = await fetch(
-              `http://localhost:5000/products/representative?category_id=${cat.id}`
-            );
-            const data = await res.json();
-            return [cat.id, data?.image_url || null];
+            try {
+              const res = await fetch(
+                `http://localhost:5000/products/representative?category_id=${cat.id}`
+              );
+              if (!res.ok) {
+                // Nếu API trả về lỗi (404), trả về null thay vì báo lỗi
+                return [cat.id, null];
+              }
+              const data = await res.json();
+              // Giả sử ảnh đại diện của category nằm trong trường `image_url`
+              const imageUrl = data?.image_url || null; // Trả về URL ảnh nếu có
+              return [cat.id, imageUrl];
+            } catch (err) {
+              console.error("Lỗi khi fetch ảnh đại diện cho category", cat.id, err);
+              return [cat.id, null];
+            }
           })
         );
-
+        // Chuyển đổi mảng entries thành một object, sau đó lưu vào state categoryImages
         setCategoryImages(Object.fromEntries(entries));
       } catch (err) {
-        console.error("Lỗi fetch category/ảnh:", err);
+        console.error("Lỗi khi fetch các category với ảnh:", err);
       }
     };
-
     fetchCategoriesWithImages();
   }, []);
 
