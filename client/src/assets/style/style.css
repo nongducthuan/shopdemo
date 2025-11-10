@@ -29,13 +29,12 @@
 html,
 body {
   overflow-x: hidden;
-  padding-top: 70px;
-  background-color: var(--color-bg);
+  padding-top: 75px;
+  background-color: var(--color-bg) !important;
 }
 
 /* 🌟 Bộ sưu tập nổi bật */
 .collection-banner-section .position-relative {
-  overflow: hidden;
   cursor: pointer;
   border-radius: 1rem;
 }
@@ -215,102 +214,6 @@ body {
   font-size: 0.95rem;
 }
 
-.cart,
-.checkout,
-.order,
-.login,
-.register {
-  width: 100vw;
-}
-
-/* 🎯 Featured Slider */
-.featured-slider {
-  text-align: center;
-}
-
-.featured-card {
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  cursor: pointer;
-}
-
-.featured-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-.featured-card img {
-  height: auto;
-  object-fit: cover;
-  border-radius: 1rem;
-}
-
-.overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
-}
-
-.overlay h5 {
-  margin: 0;
-  font-size: 1rem;
-  text-transform: uppercase;
-}
-
-/* 🌈 Hiệu ứng màu gradient cho chữ */
-.section-title {
-  position: relative;
-  display: inline-block;
-  background: linear-gradient(90deg, #1da1f2, #6cc9ff);
-  /* màu sáng dần từ trái sang phải */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  animation: fadeColor 3s ease infinite alternate;
-  /* hiệu ứng đổi sáng-tối */
-}
-
-/* 🔽 Thanh trượt ngang bên dưới tiêu đề */
-.section-title::after {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #1da1f2, #6cc9ff);
-  border-radius: 2px;
-  animation: slideLine 2s ease infinite alternate;
-}
-
-/* ✨ Animation làm màu chữ sáng tối dần */
-@keyframes fadeColor {
-  from {
-    filter: brightness(0.8);
-  }
-
-  to {
-    filter: brightness(1.2);
-  }
-}
-
-/* 🚀 Animation cho thanh gạch chân “trượt” qua lại */
-@keyframes slideLine {
-  from {
-    transform: scaleX(0.5);
-    transform-origin: left;
-  }
-
-  to {
-    transform: scaleX(1);
-    transform-origin: right;
-  }
-}
-
 /* --- BANNER MANAGER --- */
 .container h2 {
   font-weight: 600;
@@ -426,29 +329,13 @@ form button.btn-primary:hover {
   background-color: #c82333;
 }
 
-.category {
-  width: 100vw;
-}
-
 @media (min-width: 769px) {
-
   html,
   body {
-    padding-top: 30px;
+    padding-top: 35px;
   }
 
   .carousel img {
     height: 100vh;
-  }
-
-  .login,
-  .register {
-    width: 25vw;
-  }
-
-  .cart,
-  .checkout,
-  .order {
-    width: 50vw;
   }
 }

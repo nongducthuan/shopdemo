@@ -84,8 +84,8 @@ export default function Checkout() {
   };
 
   return (
-    <div className="checkout container mt-4">
-      <h2 className="text-center">Thanh toán</h2>
+    <div class="w-4/5 md:w-3/4 mt-5 mb-5 mx-auto">
+      <h2 className="text-center text-2xl fw-bold mb-4">THANH TOÁN</h2>
       <ul className="list-group mb-3">
         {cart.map((p) => (
           <li
@@ -121,8 +121,11 @@ export default function Checkout() {
                 <div>Số lượng: {p.quantity ?? 1}</div>
               </div>
             </div>
-            <span>
-              {formatCurrency(Number(p.price) * (p.quantity ?? 1))}
+            <span className="text-red-600 font-semibold">
+              {Number(p.price * (p.quantity ?? 1)).toLocaleString("vi-VN", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })} đ
             </span>
           </li>
         ))}
@@ -142,7 +145,15 @@ export default function Checkout() {
         />
       </div>
 
-      <h4 className="mb-3">Tổng tiền: {formatCurrency(total)}</h4>
+      <h4 className="mb-3">
+        Tổng tiền:{" "}
+        <span className="text-red-600 font-semibold">
+          {Number(total).toLocaleString("vi-VN", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          })} đ
+        </span>
+      </h4>
 
       <div className="mb-3">
         <button className="btn btn-success" onClick={handleCheckout}>

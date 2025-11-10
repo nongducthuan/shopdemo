@@ -41,49 +41,47 @@ export default function Login() {
   };
 
   return (
-    <div className="login container mt-4">
-      <h2 className="mb-4 text-center">Đăng nhập</h2>
-
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <input
-            type="text"
-            name="identifier"
-            className="form-control"
-            placeholder="Email hoặc số điện thoại"
-            value={form.identifier}
-            onChange={handleChange}
-            required
-          />
+    <div className="login container mt-4 flex justify-center">
+      <div className="w-full max-w-md lg:w-1/2">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-gray-800">
+          ĐĂNG NHẬP
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              name="identifier"
+              className="form-control"
+              placeholder="Email hoặc số điện thoại"
+              value={form.identifier}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              placeholder="Mật khẩu"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">
+            Đăng nhập
+          </button>
+        </form>
+        {error && <div className="alert alert-danger mt-3">{error}</div>}
+        <div className="text-center mt-3">
+          <span>Chưa có tài khoản? </span>
+          <Link to="/register" className="text-primary fw-semibold">
+            Đăng ký ngay
+          </Link>
         </div>
-
-        <div className="mb-3">
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            placeholder="Mật khẩu"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary w-100">
-          Đăng nhập
-        </button>
-      </form>
-
-      {/* 🔹 Hiển thị lỗi */}
-      {error && <div className="alert alert-danger mt-3">{error}</div>}
-
-      {/* 🔹 Liên kết đăng ký */}
-      <div className="text-center mt-3">
-        <span>Chưa có tài khoản? </span>
-        <Link to="/register" className="text-primary fw-semibold">
-          Đăng ký ngay
-        </Link>
       </div>
     </div>
+
   );
 }

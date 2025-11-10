@@ -91,9 +91,8 @@ export default function Cart() {
   };
 
   return (
-    <div className="cart container mt-5 mb-5">
-      <h2 className="text-center fw-bold mb-4">🛒 Giỏ hàng</h2>
-
+    <div class="w-4/5 md:w-3/4 mt-5 mb-5 mx-auto">
+      <h2 className="text-center text-2xl fw-bold mb-4">🛒 GIỎ HÀNG</h2>
       {cart.length === 0 ? (
         <div className="text-center text-muted mt-4">
           <i className="fas fa-shopping-basket fa-2x mb-3"></i>
@@ -104,7 +103,7 @@ export default function Cart() {
         </div>
       ) : (
         <>
-          <ul className="list-group shadow-sm rounded-3 mb-4">
+          <ul className="list-group shadow-sm rounded-3 mb-4 gap-5">
             {cart.map((p) => {
               const opt = options[p.id];
               // 💡 GỌI HÀM XỬ LÝ ĐƯỜNG DẪN ẢNH
@@ -202,7 +201,13 @@ export default function Cart() {
                     </span>
                     <button
                       className="btn btn-sm btn-outline-danger"
-                      onClick={() => removeFromCart(p.id)}
+                      onClick={() =>
+                        removeFromCart({
+                          id: p.id,
+                          size_id: p.size_id,
+                          color_id: p.color_id,
+                        })
+                      }
                     >
                       <i className="fas fa-trash"></i>
                     </button>

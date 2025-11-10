@@ -5,8 +5,7 @@ import API from "../api.jsx";
 export default function AdminProductDetail() {
   const { id } = useParams();
   const token = localStorage.getItem("token");
-
-  const backendUrl = "http://localhost:5000"; // URL backend
+  const backendUrl = "http://localhost:5000";
 
   const [product, setProduct] = useState(null);
   const [form, setForm] = useState({
@@ -15,15 +14,12 @@ export default function AdminProductDetail() {
     price: 0,
     stock: 0,
     image_url: "",
-    gender: "",
-    category: "",
   });
   const [colors, setColors] = useState([]);
   const [selectedColor, setSelectedColor] = useState(null);
   const [newSize, setNewSize] = useState({ size: "", stock: 0 });
   const [mainImage, setMainImage] = useState("");
 
-  // =================== FETCH PRODUCT ===================
   useEffect(() => {
     fetchProduct();
   }, [id]);
@@ -34,30 +30,39 @@ export default function AdminProductDetail() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = res.data;
+
+      // prepend backendUrl cho ảnh
+      if (data.image_url && !data.image_url.startsWith("http")) {
+        data.image_url = `${backendUrl}${data.image_url}`;
+      }
+      if (data.colors?.length > 0) {
+        data.colors = data.colors.map((c) => ({
+          ...c,
+          image_url: c.image_url && !c.image_url.startsWith("http") ? `${backendUrl}${c.image_url}` : c.image_url,
+        }));
+      }
+
       setProduct(data);
       setForm({
         name: data.name,
         description: data.description || "",
         price: data.price,
         stock: data.stock || 0,
-        image_url: data.image_url || "",
-        gender: data.gender || "",
-        category: data.category || "",
+        image_url: data.image_url || ""
       });
-      setColors(data.colors || []);
 
+      setColors(data.colors || []);
       if (data.colors?.length > 0) {
         setSelectedColor(data.colors[0]);
-        setMainImage(data.colors[0].image_url ? `${backendUrl}${data.colors[0].image_url}` : `${backendUrl}${data.image_url}`);
+        setMainImage(data.colors[0].image_url || data.image_url);
       } else {
-        setMainImage(data.image_url ? `${backendUrl}${data.image_url}` : "");
+        setMainImage(data.image_url || "");
       }
     } catch (err) {
       console.error(err);
     }
   };
 
-  // =================== FORM CHÍNH ===================
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
@@ -71,7 +76,6 @@ export default function AdminProductDetail() {
     }
   };
 
-  // =================== COLORS ===================
   const handleAddColor = async () => {
     try {
       const res = await API.post(
@@ -82,7 +86,7 @@ export default function AdminProductDetail() {
       const newColor = { color_name: "Màu mới", color_code: "#ffffff", image_url: "", sizes: [], id: res.data.colorId };
       setColors([...colors, newColor]);
       setSelectedColor(newColor);
-      setMainImage(form.image_url ? `${backendUrl}${form.image_url}` : "");
+      setMainImage(form.image_url || "");
     } catch (err) {
       console.error(err);
     }
@@ -94,7 +98,7 @@ export default function AdminProductDetail() {
       const updatedColors = colors.map(c => c.id === color.id ? color : c);
       setColors(updatedColors);
       setSelectedColor(color);
-      setMainImage(color.image_url ? `${backendUrl}${color.image_url}` : `${backendUrl}${form.image_url}`);
+      setMainImage(color.image_url || form.image_url);
     } catch (err) {
       console.error(err);
     }
@@ -107,14 +111,13 @@ export default function AdminProductDetail() {
       setColors(updatedColors);
       if (selectedColor?.id === colorId) {
         setSelectedColor(updatedColors[0] || null);
-        setMainImage(updatedColors[0]?.image_url ? `${backendUrl}${updatedColors[0].image_url}` : `${backendUrl}${form.image_url}`);
+        setMainImage(updatedColors[0]?.image_url || form.image_url);
       }
     } catch (err) {
       console.error(err);
     }
   };
 
-  // =================== SIZES ===================
   const handleAddSize = async () => {
     if (!newSize.size || !selectedColor) return;
     try {
@@ -133,10 +136,7 @@ export default function AdminProductDetail() {
     if (!selectedColor) return;
     try {
       await API.put(`/admin/sizes/${size.id}`, size, { headers: { Authorization: `Bearer ${token}` } });
-      const updatedColor = {
-        ...selectedColor,
-        sizes: selectedColor.sizes.map(s => s.id === size.id ? size : s)
-      };
+      const updatedColor = { ...selectedColor, sizes: selectedColor.sizes.map(s => s.id === size.id ? size : s) };
       setSelectedColor(updatedColor);
       setColors(colors.map(c => c.id === updatedColor.id ? updatedColor : c));
       alert("Cập nhật size thành công!");
@@ -160,42 +160,41 @@ export default function AdminProductDetail() {
   if (!product) return <div>Loading...</div>;
 
   return (
-    <div style={{ display: "flex", gap: "2rem", padding: "2rem" }}>
+    <div className="flex flex-col md:flex-row gap-8 p-8 justify-center items-start">
       {/* Cột trái: Ảnh + màu */}
-      <div style={{ flex: 1 }}>
-        <img
-          src={mainImage || "https://via.placeholder.com/400x400?text=No+Image"}
-          alt={product.name}
-          style={{ width: "100%", maxWidth: "400px", objectFit: "cover", borderRadius: "8px" }}
-        />
-        <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
-          {colors.map(color => (
-            <div key={color.id} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div className="flex-1 flex flex-col items-center max-w-md">
+        <div className="flex-1 max-w-md flex justify-center">
+          <img
+            src={mainImage || "https://via.placeholder.com/400x400?text=No+Image"}
+            alt={product.name}
+            className="w-auto max-w-xs h-auto object-cover rounded-lg"
+          />
+        </div>
+        <div className="flex gap-3 mt-4 flex-wrap justify-center">
+          {colors.map((color) => (
+            <div key={color.id} className="flex flex-col items-center">
               <div
-                onClick={() => { 
-                  setSelectedColor(color); 
-                  setMainImage(color.image_url ? `${backendUrl}${color.image_url}` : `${backendUrl}${form.image_url}`); 
+                onClick={() => {
+                  setSelectedColor(color);
+                  setMainImage(color.image_url || form.image_url);
                 }}
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  border: selectedColor?.id === color.id ? "3px solid blue" : "1px solid gray",
-                  backgroundColor: color.color_code,
-                  cursor: "pointer",
-                }}
+                className={`w-10 h-10 rounded-full cursor-pointer border-2 transition-transform ${selectedColor?.id === color.id ? "border-black" : "border-gray-300"}`}
+                style={{ backgroundColor: color.color_code }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
               />
               <button
                 onClick={() => handleDeleteColor(color.id)}
-                style={{ background: "transparent", border: "none", cursor: "pointer", color: "red", marginTop: "0.2rem" }}
+                className="text-red-500 mt-1"
               >
                 <i className="fas fa-trash"></i>
               </button>
             </div>
           ))}
+
           <button
             onClick={handleAddColor}
-            style={{ backgroundColor: "blue", color: "white", padding: "0.5rem", marginLeft: "0.5rem", borderRadius: "5px" }}
+            className="bg-blue-600 text-white px-3 py-1 rounded-md self-center"
           >
             Thêm màu mới
           </button>
@@ -203,33 +202,98 @@ export default function AdminProductDetail() {
       </div>
 
       {/* Cột phải: Form sản phẩm + quản lý màu + size */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1rem" }}>
-        {selectedColor && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <h4>Thông tin màu: {selectedColor.color_name}</h4>
-            <input placeholder="Tên màu" value={selectedColor.color_name} onChange={(e) => setSelectedColor({ ...selectedColor, color_name: e.target.value })} />
-            <input placeholder="Code màu" value={selectedColor.color_code} onChange={(e) => setSelectedColor({ ...selectedColor, color_code: e.target.value })} />
-            <input placeholder="URL hình ảnh" value={selectedColor.image_url} onChange={(e) => setSelectedColor({ ...selectedColor, image_url: e.target.value })} />
-            <button onClick={() => handleSaveColor(selectedColor)} style={{ backgroundColor: "green", color: "white", padding: "0.5rem", borderRadius: "5px" }}>Cập nhật</button>
+      <div className="flex-1 flex flex-col gap-4 max-w-md">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full">
+          <input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Tên sản phẩm"
+            className="border rounded-md px-2 py-1 w-full"
+          />
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Mô tả"
+            className="border rounded-md px-2 py-1 w-full"
+          />
+          <input
+            name="price"
+            type="number"
+            value={form.price}
+            onChange={handleChange}
+            placeholder="Giá"
+            className="border rounded-md px-2 py-1 w-full"
+          />
+          <input
+            name="stock"
+            type="number"
+            value={form.stock}
+            onChange={handleChange}
+            placeholder="Stock"
+            className="border rounded-md px-2 py-1 w-full"
+          />
+          <input
+            name="image_url"
+            value={form.image_url}
+            onChange={handleChange}
+            placeholder="URL hình ảnh"
+            className="border rounded-md px-2 py-1 w-full"
+          />
+          <button type="submit" className="bg-green-600 text-white px-3 py-2 rounded-md mt-2">
+            Cập nhật sản phẩm
+          </button>
+        </form>
 
-            <h4>Size của màu: {selectedColor.color_name}</h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-              {(selectedColor.sizes || []).map(size => (
-                <div key={size.id} style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        {selectedColor && (
+          <div className="flex flex-col gap-3 w-full">
+            <h4 className="font-semibold">Thông tin màu: {selectedColor.color_name}</h4>
+            <input
+              placeholder="Tên màu"
+              value={selectedColor.color_name}
+              onChange={(e) => setSelectedColor({ ...selectedColor, color_name: e.target.value })}
+              className="border rounded-md px-2 py-1 w-full"
+            />
+            <input
+              placeholder="Code màu"
+              value={selectedColor.color_code}
+              onChange={(e) => setSelectedColor({ ...selectedColor, color_code: e.target.value })}
+              className="border rounded-md px-2 py-1 w-full"
+            />
+            <input
+              placeholder="URL hình ảnh"
+              value={selectedColor.image_url}
+              onChange={(e) => setSelectedColor({ ...selectedColor, image_url: e.target.value })}
+              className="border rounded-md px-2 py-1 w-full"
+            />
+            <button
+              onClick={() => handleSaveColor(selectedColor)}
+              className="bg-green-600 text-white px-3 py-1 rounded-md mt-2"
+            >
+              Cập nhật màu
+            </button>
+
+            <h4 className="font-semibold mt-4">Size của màu: {selectedColor.color_name}</h4>
+            <div className="flex flex-col gap-2 w-full">
+              {(selectedColor.sizes || []).map((size) => (
+                <div key={size.id} className="flex gap-2 items-center flex-wrap">
                   <select
                     value={size.size}
                     onChange={(e) =>
                       setSelectedColor({
                         ...selectedColor,
-                        sizes: selectedColor.sizes.map(s =>
+                        sizes: selectedColor.sizes.map((s) =>
                           s.id === size.id ? { ...s, size: e.target.value } : s
                         ),
                       })
                     }
-                    style={{ width: "60px" }}
+                    className="border rounded-md px-2 py-1"
                   >
-                    {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(option => (
-                      <option key={option} value={option}>{option}</option>
+                    {["XS", "S", "M", "L", "XL", "XXL"].map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
                     ))}
                   </select>
 
@@ -239,37 +303,40 @@ export default function AdminProductDetail() {
                     onChange={(e) =>
                       setSelectedColor({
                         ...selectedColor,
-                        sizes: selectedColor.sizes.map(s =>
+                        sizes: selectedColor.sizes.map((s) =>
                           s.id === size.id ? { ...s, stock: +e.target.value } : s
                         ),
                       })
                     }
-                    style={{ width: "50px" }}
+                    className="border rounded-md px-2 py-1 w-20"
                   />
+
                   <button
                     onClick={() => handleUpdateSize(size)}
-                    style={{ backgroundColor: "orange", color: "white", padding: "0 0.5rem", borderRadius: "5px" }}
+                    className="bg-orange-500 text-white px-3 py-1 rounded-md"
                   >
                     Cập nhật
                   </button>
                   <button
                     onClick={() => handleDeleteSize(size.id)}
-                    style={{ background: "transparent", border: "none", color: "red" }}
+                    className="text-red-500 px-2 py-1"
                   >
                     <i className="fas fa-trash"></i>
                   </button>
                 </div>
               ))}
 
-              <div style={{ display: "flex", gap: "0.5rem" }}>
+              <div className="flex gap-2 mt-2 flex-wrap items-center">
                 <select
                   value={newSize.size}
                   onChange={(e) => setNewSize({ ...newSize, size: e.target.value })}
-                  style={{ width: "60px" }}
+                  className="border rounded-md px-2 py-1"
                 >
                   <option value="">Chọn size</option>
-                  {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(option => (
-                    <option key={option} value={option}>{option}</option>
+                  {["XS", "S", "M", "L", "XL", "XXL"].map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
                   ))}
                 </select>
 
@@ -278,11 +345,12 @@ export default function AdminProductDetail() {
                   type="number"
                   value={newSize.stock}
                   onChange={(e) => setNewSize({ ...newSize, stock: +e.target.value })}
-                  style={{ width: "50px" }}
+                  className="border rounded-md px-2 py-1 w-20"
                 />
+
                 <button
                   onClick={handleAddSize}
-                  style={{ backgroundColor: "blue", color: "white", padding: "0.5rem", borderRadius: "5px" }}
+                  className="bg-blue-600 text-white px-3 py-1 rounded-md"
                 >
                   Thêm size
                 </button>

@@ -34,10 +34,10 @@ export default function Admin() {
   }, []);
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">Dashboard</h2>
+    <div class="container mt-4 mb-4">
+      <h2 className="text-center text-2xl fw-bold mb-4">DASHBOARD</h2>
       <p className="text-center text-muted mb-5">
-       Chọn khu vực bạn muốn quản lý
+        Chọn khu vực bạn muốn quản lý
       </p>
 
       <div className="row g-4">

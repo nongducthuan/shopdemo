@@ -6,12 +6,13 @@ export default function ProductDetail() {
   const { id } = useParams();
   const { addToCart } = useContext(CartContext);
 
-  const backendUrl = "http://localhost:5000"; // URL backend
+  const backendUrl = "http://localhost:5000";
 
   const [product, setProduct] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [mainImage, setMainImage] = useState("");
+
   const formatPrice = (price) => Number(price).toLocaleString("vi-VN");
 
   useEffect(() => {
@@ -46,25 +47,19 @@ export default function ProductDetail() {
   if (!product) return <div>Loading...</div>;
 
   return (
-    <div style={{ display: "flex", gap: "2rem", padding: "2rem" }}>
-      {/* Ảnh chính */}
-      <div>
-        <img
-          src={mainImage || "https://via.placeholder.com/400x400?text=No+Image"}
-          alt={product.name}
-          style={{ width: "400px", height: "400px", objectFit: "cover" }}
-        />
-
+    <div className="flex flex-col md:flex-row gap-8 p-8 justify-center items-start">
+      {/* Cột ảnh */}
+      <div className="flex-1 max-w-md">
+        <div className="flex-1 max-w-md flex justify-center">
+          <img
+            src={mainImage || "https://via.placeholder.com/400x400?text=No+Image"}
+            alt={product.name}
+            className="w-auto max-w-xs h-auto object-cover rounded-lg"
+          />
+        </div>
         {/* Chọn màu */}
         {product.colors?.length > 0 && (
-          <div
-            style={{
-              marginTop: "1rem",
-              display: "flex",
-              gap: "1rem",
-              justifyContent: "center",
-            }}
-          >
+          <div className="flex gap-3 mt-4 justify-center">
             {product.colors.map((color) => (
               <div
                 key={color.id}
@@ -73,15 +68,9 @@ export default function ProductDetail() {
                   setMainImage(color.image_url || product.image_url);
                   setSelectedSize(null);
                 }}
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  border: selectedColor?.id === color.id ? "3px solid black" : "1px solid #ccc",
-                  backgroundColor: color.color_code,
-                  cursor: "pointer",
-                  transition: "transform 0.2s",
-                }}
+                className={`w-10 h-10 rounded-full cursor-pointer border-2 transition-transform ${selectedColor?.id === color.id ? "border-black" : "border-gray-300"
+                  }`}
+                style={{ backgroundColor: color.color_code }}
                 onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
               ></div>
@@ -90,28 +79,25 @@ export default function ProductDetail() {
         )}
       </div>
 
-      {/* Thông tin sản phẩm */}
-      <div style={{ flex: 1 }}>
-        <h2>{product.name}</h2>
-        <p>{product.description}</p>
-        <p>Giá: {formatPrice(product.price)} VND</p>
+      {/* Cột thông tin sản phẩm */}
+      <div className="flex-1 max-w-md flex flex-col">
+        <h2 className="text-2xl font-bold">{product.name}</h2>
+        <p className="text-gray-700">{product.description}</p>
+        <p className="text-xl font-semibold mt-2">Giá: <span className="text-red-600">{formatPrice(product.price)} VND</span></p>
 
         {/* Chọn size */}
         {selectedColor?.sizes?.length > 0 && (
-          <div style={{ marginTop: "1rem" }}>
-            <p>Chọn size:</p>
-            <div style={{ display: "flex", gap: "0.5rem" }}>
+          <div className="mt-4">
+            <p className="font-medium">Chọn size:</p>
+            <div className="flex gap-2 mt-2 flex-wrap">
               {selectedColor.sizes.map((size) => (
                 <button
                   key={size.id}
                   onClick={() => setSelectedSize(size)}
-                  style={{
-                    padding: "0.5rem 1rem",
-                    backgroundColor: selectedSize?.id === size.id ? "blue" : "lightgray",
-                    color: selectedSize?.id === size.id ? "white" : "black",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
+                  className={`px-4 py-2 rounded-md border ${selectedSize?.id === size.id
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "bg-gray-200 text-black border-gray-200"
+                    }`}
                 >
                   {size.size}
                 </button>
@@ -136,14 +122,7 @@ export default function ProductDetail() {
                 size: selectedSize?.size ?? null,
               })
             }
-            style={{
-              marginTop: "2rem",
-              padding: "1rem 2rem",
-              backgroundColor: "green",
-              color: "white",
-              border: "none",
-              cursor: "pointer",
-            }}
+            className="sm:w-1/2 mt-6 px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
           >
             Thêm vào giỏ
           </button>
