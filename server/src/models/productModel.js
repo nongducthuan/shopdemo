@@ -1,7 +1,7 @@
-// models/productModel.js
 const pool = require('../db');
 
 // ✅ Lấy tất cả sản phẩm (có thể lọc theo category_id)
+// Có thể thêm phân trang sau bằng cách truyền page và limit
 async function getAllProducts(category_id = null) {
   let sql = `
     SELECT
@@ -24,7 +24,7 @@ async function getAllProducts(category_id = null) {
   }
 
   const [rows] = await pool.query(sql, params);
-  return rows;
+  return rows; // luôn trả mảng, không bao giờ undefined
 }
 
 // ✅ Lấy sản phẩm đại diện (sản phẩm đầu tiên trong danh mục)
@@ -61,9 +61,18 @@ async function getProductOptionsById(productId) {
   return { sizes, colors };
 }
 
+// ✅ Lấy chi tiết sản phẩm theo id
 async function getProductById(id) {
-   const[rows] = await db.query ("SELECT * FROM products WHERE id = ?", [id]);
-   return rows[0];
+  const [rows] = await pool.query(
+    "SELECT * FROM products WHERE id = ?",
+    [id]
+  );
+  return rows[0] || null; // nếu không có sản phẩm trả null
 }
 
-module.exports = { getAllProducts, getRepresentativeProduct, getProductOptionsById, getProductById};
+module.exports = {
+  getAllProducts,
+  getRepresentativeProduct,
+  getProductOptionsById,
+  getProductById
+};

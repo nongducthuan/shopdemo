@@ -29,11 +29,25 @@ async function getRepresentative(req, res) {
 
 // ✅ Lấy tất cả sản phẩm (hoặc theo category_id)
 async function getProducts(req, res) {
-  const { category_id } = req.query;
+  const { category_id, page = 1, limit = 8 } = req.query;
 
   try {
     const products = await getAllProducts(category_id);
-    res.json(products);
+    const total = products.length; // tổng sản phẩm (nếu chưa phân trang ở model)
+    const totalPages = Math.ceil(total / limit);
+    const pageNum = Math.max(1, Number(page));
+
+    // Lấy sản phẩm của trang hiện tại (nếu phân trang ở frontend)
+    const start = (pageNum - 1) * limit;
+    const end = start + Number(limit);
+    const data = products.slice(start, end);
+
+    res.json({
+      data,
+      total,
+      totalPages,
+      page: pageNum
+    });
   } catch (err) {
     console.error("❌ Lỗi khi lấy sản phẩm:", err);
     res.status(500).json({ message: "Server error" });
@@ -69,4 +83,4 @@ async function getProduct(req, res) {
   }
 }
 
-module.exports = { getRepresentative, getProducts, getProductOptions, getProduct};
+module.exports = { getRepresentative, getProducts, getProductOptions, getProduct };
