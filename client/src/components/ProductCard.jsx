@@ -24,16 +24,18 @@ export default function ProductCard({ product }) {
         />
       </div>
 
-      <div className="card-body text-center">
-        <h6 className="card-title text-truncate mb-1">{product.name}</h6>
+      <div className="card-body d-flex flex-column text-center">
+        <h3 className="font-bold text-lg text-gray-800 pt-1">{product.name}</h3>
+
         {product.description && (
-          <p className="card-text text-muted small mb-2">
+          <p className="card-text text-muted small mb-2 flex-grow">
             {product.description.length > 60
               ? product.description.slice(0, 60) + "..."
               : product.description}
           </p>
         )}
-        <p className="text-danger fw-bold mb-0">
+
+        <p className="text-danger fw-bold mt-auto mb-0">
           {formatCurrency(product.price)}
         </p>
       </div>

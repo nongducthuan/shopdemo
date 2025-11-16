@@ -173,21 +173,21 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
             <div className="w-full md:w-[380px] aspect-w-4 aspect-h-6 rounded-3xl overflow-hidden shadow-lg">
               <img
-                src="https://www.rails.com/cdn/shop/files/msu24-lookbook-5_1920x.jpg?v=1713387507"
+                src="https://api.fastretailing.com/ugc/v1/uq/gl/OFFICIAL_IMAGES/25110708049_official_styling_180000008"
                 className="w-full h-full object-cover"
                 alt="Look 1"
               />
             </div>
             <div className="w-full md:w-[380px] aspect-w-4 aspect-h-6 rounded-3xl overflow-hidden shadow-lg">
               <img
-                src="https://www.initialfashion.com/uploads/attachments/cl1x3ldes1httasgxs98428yv-ps-20220225-initial-5914.full.jpg"
+                src="https://api.fastretailing.com/ugc/v1/uq/gl/OFFICIAL_IMAGES/25110708050_official_styling_180000012"
                 className="w-full h-full object-cover"
                 alt="Look 2"
               />
             </div>
             <div className="w-full md:w-[380px] aspect-w-4 aspect-h-6 rounded-3xl overflow-hidden shadow-lg">
               <img
-                src="https://www.westside.com/cdn/shop/articles/Untitled_design_-_2024-02-16T164143.113.png?v=1708088745&width=533"
+                src="https://api.fastretailing.com/ugc/v1/uq/gl/OFFICIAL_IMAGES/251017001532_official_styling_130016330"
                 className="w-full h-full object-cover"
                 alt="Look 3"
               />

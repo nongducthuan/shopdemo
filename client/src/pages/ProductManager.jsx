@@ -84,9 +84,6 @@ export default function ProductManager() {
             <option value="">-- Chọn danh mục --</option>
             <option value="Áo">Áo</option>
             <option value="Quần">Quần</option>
-            <option value="Váy">Váy</option>
-            <option value="Giày">Giày</option>
-            <option value="Phụ kiện">Phụ kiện</option>
           </select>
         </div>
         <div className="col-md-3">

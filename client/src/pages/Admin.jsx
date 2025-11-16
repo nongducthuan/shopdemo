@@ -15,9 +15,15 @@ export default function Admin() {
       try {
         const token = localStorage.getItem("token");
         const [productRes, orderRes, bannerRes] = await Promise.all([
-          API.get("/admin/products", { headers: { Authorization: `Bearer ${token}` } }),
-          API.get("/admin/orders", { headers: { Authorization: `Bearer ${token}` } }),
-          API.get("/admin/banners", { headers: { Authorization: `Bearer ${token}` } }),
+          API.get("/admin/products", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          API.get("/admin/orders", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          API.get("/admin/banners", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
 
         setStats({
@@ -42,9 +48,10 @@ export default function Admin() {
 
       <div className="row g-4">
         {/* Quản lý Banner */}
+        {/* Quản lý Banner */}
         <div className="col-md-4">
           <div
-            className="card shadow-sm text-center p-4 dashboard-card"
+            className="card shadow-sm text-center p-4 dashboard-card d-flex flex-column align-items-center"
             style={{ cursor: "pointer" }}
             onClick={() => navigate("/admin/banner")}
           >
@@ -57,7 +64,7 @@ export default function Admin() {
         {/* Quản lý Sản phẩm */}
         <div className="col-md-4">
           <div
-            className="card shadow-sm text-center p-4 dashboard-card"
+            className="card shadow-sm text-center p-4 dashboard-card d-flex flex-column align-items-center"
             style={{ cursor: "pointer" }}
             onClick={() => navigate("/admin/products")}
           >
@@ -70,7 +77,7 @@ export default function Admin() {
         {/* Quản lý Đơn hàng */}
         <div className="col-md-4">
           <div
-            className="card shadow-sm text-center p-4 dashboard-card"
+            className="card shadow-sm text-center p-4 dashboard-card d-flex flex-column align-items-center"
             style={{ cursor: "pointer" }}
             onClick={() => navigate("/admin/orders")}
           >

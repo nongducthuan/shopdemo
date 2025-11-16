@@ -160,16 +160,18 @@ export default function AdminProductDetail() {
   if (!product) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 p-8 justify-center items-start">
+    <div className="flex flex-col md:flex-row gap-8 p-8 justify-center items-start bg-gray-100 min-h-screen">
+
       {/* Cột trái: Ảnh + màu */}
-      <div className="flex-1 flex flex-col items-center max-w-md">
-        <div className="flex-1 max-w-md flex justify-center">
+      <div className="flex-1 flex flex-col items-center max-w-md bg-white p-4 rounded-lg shadow-md">
+        <div className="flex justify-center w-full">
           <img
             src={mainImage || "https://via.placeholder.com/400x400?text=No+Image"}
             alt={product.name}
             className="w-auto max-w-xs h-auto object-cover rounded-lg"
           />
         </div>
+
         <div className="flex gap-3 mt-4 flex-wrap justify-center">
           {colors.map((color) => (
             <div key={color.id} className="flex flex-col items-center">
@@ -194,7 +196,7 @@ export default function AdminProductDetail() {
 
           <button
             onClick={handleAddColor}
-            className="bg-blue-600 text-white px-3 py-1 rounded-md self-center"
+            className="bg-blue-600 text-white px-3 py-1 rounded-md self-center hover:bg-blue-700 transition-colors"
           >
             Thêm màu mới
           </button>
@@ -202,21 +204,21 @@ export default function AdminProductDetail() {
       </div>
 
       {/* Cột phải: Form sản phẩm + quản lý màu + size */}
-      <div className="flex-1 flex flex-col gap-4 max-w-md">
+      <div className="flex-1 flex flex-col gap-4 max-w-md bg-white p-6 rounded-lg shadow-md">
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full">
           <input
             name="name"
             value={form.name}
             onChange={handleChange}
             placeholder="Tên sản phẩm"
-            className="border rounded-md px-2 py-1 w-full"
+            className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <textarea
             name="description"
             value={form.description}
             onChange={handleChange}
             placeholder="Mô tả"
-            className="border rounded-md px-2 py-1 w-full"
+            className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             name="price"
@@ -224,7 +226,7 @@ export default function AdminProductDetail() {
             value={form.price}
             onChange={handleChange}
             placeholder="Giá"
-            className="border rounded-md px-2 py-1 w-full"
+            className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             name="stock"
@@ -232,49 +234,52 @@ export default function AdminProductDetail() {
             value={form.stock}
             onChange={handleChange}
             placeholder="Stock"
-            className="border rounded-md px-2 py-1 w-full"
+            className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             name="image_url"
             value={form.image_url}
             onChange={handleChange}
             placeholder="URL hình ảnh"
-            className="border rounded-md px-2 py-1 w-full"
+            className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
-          <button type="submit" className="bg-green-600 text-white px-3 py-2 rounded-md mt-2">
+          <button
+            type="submit"
+            className="bg-green-600 text-white px-3 py-2 rounded-md mt-2 hover:bg-green-700 transition-colors"
+          >
             Cập nhật sản phẩm
           </button>
         </form>
 
         {selectedColor && (
-          <div className="flex flex-col gap-3 w-full">
-            <h4 className="font-semibold">Thông tin màu: {selectedColor.color_name}</h4>
+          <div className="mt-6">
+            <h4 className="font-semibold text-gray-800">Thông tin màu: {selectedColor.color_name}</h4>
             <input
               placeholder="Tên màu"
               value={selectedColor.color_name}
               onChange={(e) => setSelectedColor({ ...selectedColor, color_name: e.target.value })}
-              className="border rounded-md px-2 py-1 w-full"
+              className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <input
               placeholder="Code màu"
               value={selectedColor.color_code}
               onChange={(e) => setSelectedColor({ ...selectedColor, color_code: e.target.value })}
-              className="border rounded-md px-2 py-1 w-full"
+              className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <input
               placeholder="URL hình ảnh"
               value={selectedColor.image_url}
               onChange={(e) => setSelectedColor({ ...selectedColor, image_url: e.target.value })}
-              className="border rounded-md px-2 py-1 w-full"
+              className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <button
               onClick={() => handleSaveColor(selectedColor)}
-              className="bg-green-600 text-white px-3 py-1 rounded-md mt-2"
+              className="bg-green-600 text-white px-3 py-1 rounded-md mt-2 hover:bg-green-700 transition-colors"
             >
               Cập nhật màu
             </button>
 
-            <h4 className="font-semibold mt-4">Size của màu: {selectedColor.color_name}</h4>
+            <h4 className="font-semibold text-gray-800 mt-4">Size của màu: {selectedColor.color_name}</h4>
             <div className="flex flex-col gap-2 w-full">
               {(selectedColor.sizes || []).map((size) => (
                 <div key={size.id} className="flex gap-2 items-center flex-wrap">
@@ -288,12 +293,10 @@ export default function AdminProductDetail() {
                         ),
                       })
                     }
-                    className="border rounded-md px-2 py-1"
+                    className="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
                     {["XS", "S", "M", "L", "XL", "XXL"].map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
+                      <option key={option} value={option}>{option}</option>
                     ))}
                   </select>
 
@@ -308,12 +311,12 @@ export default function AdminProductDetail() {
                         ),
                       })
                     }
-                    className="border rounded-md px-2 py-1 w-20"
+                    className="border border-gray-300 rounded-md px-2 py-1 w-20 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
 
                   <button
                     onClick={() => handleUpdateSize(size)}
-                    className="bg-orange-500 text-white px-3 py-1 rounded-md"
+                    className="bg-orange-500 text-white px-3 py-1 rounded-md hover:bg-orange-600 transition-colors"
                   >
                     Cập nhật
                   </button>
@@ -330,13 +333,11 @@ export default function AdminProductDetail() {
                 <select
                   value={newSize.size}
                   onChange={(e) => setNewSize({ ...newSize, size: e.target.value })}
-                  className="border rounded-md px-2 py-1"
+                  className="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 >
                   <option value="">Chọn size</option>
                   {["XS", "S", "M", "L", "XL", "XXL"].map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
+                    <option key={option} value={option}>{option}</option>
                   ))}
                 </select>
 
@@ -345,12 +346,12 @@ export default function AdminProductDetail() {
                   type="number"
                   value={newSize.stock}
                   onChange={(e) => setNewSize({ ...newSize, stock: +e.target.value })}
-                  className="border rounded-md px-2 py-1 w-20"
+                  className="border border-gray-300 rounded-md px-2 py-1 w-20 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
 
                 <button
                   onClick={handleAddSize}
-                  className="bg-blue-600 text-white px-3 py-1 rounded-md"
+                  className="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors"
                 >
                   Thêm size
                 </button>

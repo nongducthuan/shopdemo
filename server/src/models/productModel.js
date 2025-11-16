@@ -4,14 +4,14 @@ const pool = require('../db');
 // ✅ Lấy tất cả sản phẩm (có thể lọc theo category_id)
 async function getAllProducts(category_id = null) {
   let sql = `
-    SELECT 
-      p.id, 
-      p.name, 
-      p.description, 
-      p.price, 
-      p.image_url, 
-      p.stock, 
-      p.sale_percent, 
+    SELECT
+      p.id,
+      p.name,
+      p.description,
+      p.price,
+      p.image_url,
+      p.stock,
+      p.sale_percent,
       c.name AS category_name
     FROM products p
     LEFT JOIN categories c ON p.category_id = c.id
@@ -30,10 +30,10 @@ async function getAllProducts(category_id = null) {
 // ✅ Lấy sản phẩm đại diện (sản phẩm đầu tiên trong danh mục)
 async function getRepresentativeProduct(category_id) {
   const [rows] = await pool.query(
-    `SELECT id, name, image_url 
-     FROM products 
-     WHERE category_id = ? 
-     ORDER BY id ASC 
+    `SELECT id, name, image_url
+     FROM products
+     WHERE category_id = ?
+     ORDER BY id ASC
      LIMIT 1`,
     [category_id]
   );
@@ -61,4 +61,9 @@ async function getProductOptionsById(productId) {
   return { sizes, colors };
 }
 
-module.exports = { getAllProducts, getRepresentativeProduct, getProductOptionsById };
+async function getProductById(id) {
+   const[rows] = await db.query ("SELECT * FROM products WHERE id = ?", [id]);
+   return rows[0];
+}
+
+module.exports = { getAllProducts, getRepresentativeProduct, getProductOptionsById, getProductById};

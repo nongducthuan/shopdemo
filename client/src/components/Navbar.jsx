@@ -195,9 +195,9 @@ export default function Navbar() {
               className="relative"
               onMouseEnter={handleAdminEnter}
               onMouseLeave={handleAdminLeave}
-              onClick={() => navigate("/admin")}
             >
               <i className="fa-solid fa-gear text-gray-700 hover:text-violet-600 cursor-pointer transition text-lg"></i>
+
               {adminMenuOpen && (
                 <div className="absolute right-0 bg-white rounded-lg shadow-md mt-2 py-2 w-44 animate-fadeIn">
                   <div

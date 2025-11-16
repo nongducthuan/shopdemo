@@ -5,58 +5,56 @@ export const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-  // Hàm kiểm tra sự trùng khớp (composite key: id + size_id + color_id)
+  // Xác định 1 item đã tồn tại (id + size_id + color_id)
   const isMatch = (p1, p2) =>
-    p1.id === p2.id && p1.size_id === p2.size_id && p1.color_id === p2.color_id;
+    p1.id === p2.id &&
+    p1.size_id === p2.size_id &&
+    p1.color_id === p2.color_id;
 
   // Thêm sản phẩm vào giỏ
   const addToCart = (product) => {
-    // Tìm xem sản phẩm đã có trong cart chưa
-    const existing = cart.find((p) => isMatch(p, product));
+    const existing = cart.find((item) => isMatch(item, product));
 
     if (existing) {
-      // Nếu đã tồn tại, tăng số lượng
+      // Nếu cùng biến thể → cộng số lượng
       setCart(
-        cart.map((p) =>
-          isMatch(p, product)
-            ? { ...p, quantity: (p.quantity || 1) + 1 }
-            : p
+        cart.map((item) =>
+          isMatch(item, product)
+            ? { ...item, quantity: item.quantity + (product.quantity || 1) }
+            : item
         )
       );
     } else {
-      // Nếu chưa tồn tại, thêm mới và lưu image_url từ product_colors
-      setCart([
-        ...cart,
-        {
-          ...product,
-          quantity: 1,
-          image_url: product.image_url || "/public/placeholder.jpg",
-        },
-      ]);
+      // Nếu biến thể mới → thêm mới với cartItemId mới
+      const newItem = {
+        ...product,
+        cartItemId: crypto.randomUUID(),
+        quantity: product.quantity || 1,
+        image_url: product.image_url || "/public/placeholder.jpg",
+      };
+      setCart([...cart, newItem]);
     }
   };
 
-  // Cập nhật số lượng sản phẩm
-  const updateQuantity = (productKey, delta) => {
+  // Cập nhật số lượng
+  const updateQuantity = (cartItemId, delta) => {
     setCart(
-      cart
-        .map((p) =>
-          isMatch(p, productKey)
-            ? { ...p, quantity: Math.max((p.quantity || 1) + delta, 1) }
-            : p
-        )
-        .filter((p) => p.quantity > 0)
+      cart.map((p) =>
+        p.cartItemId === cartItemId
+          ? { ...p, quantity: Math.max(1, p.quantity + delta) }
+          : p
+      )
     );
   };
 
-  // Xóa sản phẩm khỏi giỏ
-  const removeFromCart = (productKey) => {
-    setCart(cart.filter((p) => !isMatch(p, productKey)));
+  // Xóa sản phẩm
+  const removeFromCart = (cartItemId) => {
+    setCart(cart.filter((p) => p.cartItemId !== cartItemId));
   };
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, updateQuantity, removeFromCart, setCart }}
+      value={{ cart, setCart, addToCart, updateQuantity, removeFromCart }}
     >
       {children}
     </CartContext.Provider>

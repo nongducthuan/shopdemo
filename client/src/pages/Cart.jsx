@@ -6,51 +6,50 @@ import API from "../api.jsx";
 export default function Cart() {
   const { cart, setCart, removeFromCart } = useContext(CartContext);
   const [options, setOptions] = useState({});
-
-  const formatPrice = (n) => Number(n).toLocaleString("vi-VN") + " đ";
-
+  const formatPrice = (n) => Number(n).toLocaleString("vi-VN") + " VND";
+  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
   const total = cart.reduce(
     (sum, p) => sum + Number(p.price) * (p.quantity || 1),
     0
   );
 
-  // 🔹 Khi cart thay đổi, tải options (size + màu)
   useEffect(() => {
     const fetchOptions = async () => {
       const result = {};
       for (const item of cart) {
         try {
           const res = await API.get(`/products/${item.id}/options`);
-          result[item.id] = res.data; // { sizes, colors }
+          result[item.id] = res.data;
         } catch (err) {
           console.error("Lỗi tải options:", err);
         }
       }
       setOptions(result);
     };
-
     if (cart.length > 0) fetchOptions();
   }, [cart]);
 
-  // 🔹 Cập nhật size hoặc màu
-  const handleSelectChange = (id, field, value) => {
-    setCart((prev) => {
-      const updated = prev.map((item) => {
-        if (item.id !== id) return item;
+  const handleSelectChange = (cartItemId, field, value) => {
+    setCart((prev) =>
+      prev.map((item) => {
+        if (item.cartItemId !== cartItemId) return item;
 
         if (field === "color") {
-          const selectedColor = options[id]?.colors?.find((c) => c.name === value);
+          const selectedColor = options[item.id]?.colors?.find(
+            (c) => c.name === value
+          );
           return {
             ...item,
             color: value,
             color_id: selectedColor?.id,
-            // Cập nhật color_image từ data API nếu có
             color_image: selectedColor?.image_url || item.color_image,
           };
         }
 
         if (field === "size") {
-          const selectedSize = options[id]?.sizes?.find((s) => s.size === value);
+          const selectedSize = options[item.id]?.sizes?.find(
+            (s) => s.size === value
+          );
           return {
             ...item,
             size: value,
@@ -59,99 +58,91 @@ export default function Cart() {
         }
 
         return item;
-      });
-
-      localStorage.setItem("cart", JSON.stringify(updated));
-      return updated;
-    });
-  };
-
-  // 🔹 Cập nhật số lượng
-  const handleQuantityChange = (id, value) => {
-    const qty = Math.max(1, Number(value) || 1);
-    const updated = cart.map((item) =>
-      item.id === id ? { ...item, quantity: qty } : item
+      })
     );
-    setCart(updated);
-    localStorage.setItem("cart", JSON.stringify(updated));
   };
 
-  // 💡 HÀM XỬ LÝ ĐƯỜNG DẪN ẢNH ĐƯỢC CẬP NHẬT Ở ĐÂY
+  const handleQuantityChange = (cartItemId, newQty) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item.cartItemId === cartItemId
+          ? {
+            ...item,
+            quantity: Math.max(1, Math.min(newQty, item.stock || 9999)),
+          }
+          : item
+      )
+    );
+  };
+
   const getImageUrl = (imagePath) => {
-    if (!imagePath) {
-      // Dùng placeholder nếu không có đường dẫn ảnh
-      return "http://localhost:5000/public/placeholder.jpg";
-    }
-    if (imagePath.startsWith("http")) {
-      // Nếu đường dẫn đã là URL đầy đủ, dùng luôn
-      return imagePath;
-    }
-    // Nếu đường dẫn là tương đối (ví dụ: /images/abc.jpg), thêm domain server vào
+    if (!imagePath) return "http://localhost:5000/public/placeholder.jpg";
+    if (imagePath.startsWith("http")) return imagePath;
     return `http://localhost:5000${imagePath}`;
   };
 
   return (
-    <div class="w-4/5 md:w-3/4 mt-5 mb-5 mx-auto">
-      <h2 className="text-center text-2xl fw-bold mb-4">🛒 GIỎ HÀNG</h2>
+    <div className="w-10/12 mx-auto mt-6 mb-10">
+      <h2 className="text-center text-2xl sm:text-3xl font-bold mb-8 text-gray-800">
+        GIỎ HÀNG
+      </h2>
       {cart.length === 0 ? (
         <div className="text-center text-muted mt-4">
-          <i className="fas fa-shopping-basket fa-2x mb-3"></i>
           <p>Chưa có sản phẩm nào trong giỏ.</p>
           <Link to="/" className="btn btn-outline-primary mt-2">
             Tiếp tục mua sắm
           </Link>
         </div>
       ) : (
-        <>
-          <ul className="list-group shadow-sm rounded-3 mb-4 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* LEFT: CART ITEMS */}
+          <div className="lg:col-span-2 flex flex-col border rounded-lg h-fit shadow-sm bg-white">
             {cart.map((p) => {
               const opt = options[p.id];
-              // 💡 GỌI HÀM XỬ LÝ ĐƯỜNG DẪN ẢNH
               const imageSrc = getImageUrl(p.color_image);
 
               return (
-                <li
-                  key={`${p.id}-${p.color_id}-${p.size_id}`}
-                  className="list-group-item d-flex flex-wrap justify-content-between align-items-center p-3 border-0 border-bottom"
+                <div
+                  key={p.cartItemId}
+                  className="flex gap-4 border-b border-black/30 bg-white"
                 >
-                  {/* Ảnh sản phẩm */}
-                  <div className="d-flex align-items-center flex-wrap">
-                    <img
-                      // SỬ DỤNG HÀM MỚI
-                      src={imageSrc}
-                      alt={p.color || "Sản phẩm"}
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        objectFit: "cover",
-                        borderRadius: "10px",
-                        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                        marginRight: "1rem",
-                      }}
-                      // 💡 Thêm onError để xử lý nếu ảnh không tải được
-                      onError={(e) => {
-                        e.target.onerror = null; // Ngăn chặn loop vô hạn
-                        e.target.src = "http://localhost:5000/public/placeholder.jpg"; // Thử tải placeholder
-                      }}
-                    />
+                  {/* IMAGE */}
+                  <img
+                    src={imageSrc}
+                    alt={p.name}
+                    className="w-[150px] h-[200px] object-cover"
+                  />
 
-                    <div>
-                      <strong className="d-block">{p.name}</strong>
+                  {/* INFO */}
+                  <div className="flex-1">
+                    <div className="flex justify-between">
+                      <h3 className="font-bold text-lg text-gray-800 pt-1">{p.name}</h3>
+                      <button
+                        onClick={() => removeFromCart(p.cartItemId)}
+                        className="text-white-500 hover:text-red-600 pr-1"
+                      >
+                        ✕
+                      </button>
+                    </div>
 
-                      {/* Chọn size và màu */}
-                      <div className="d-flex flex-wrap align-items-center mt-2">
-                        <div className="me-3">
-                          <label className="me-1 text-secondary small">Size:</label>
+                    {/* SIZE & COLOR */}
+                    <div className="mt-2 text-sm text-gray-600">
+                      <div className="flex gap-4 mb-2">
+                        <div>
+                          <label className="block mb-1">Kích cỡ:</label>
                           <select
-                            className="form-select form-select-sm"
-                            style={{ width: "90px" }}
                             value={p.size}
                             onChange={(e) =>
-                              handleSelectChange(p.id, "size", e.target.value)
+                              handleSelectChange(
+                                p.cartItemId,
+                                "size",
+                                e.target.value
+                              )
                             }
+                            className="border rounded px-2 py-1"
                           >
-                            {opt?.sizes?.map((s, index) => (
-                              <option key={s.size_id || index} value={s.size}>
+                            {opt?.sizes?.map((s) => (
+                              <option key={s.id} value={s.size}>
                                 {s.size}
                               </option>
                             ))}
@@ -159,14 +150,17 @@ export default function Cart() {
                         </div>
 
                         <div>
-                          <label className="me-1 text-secondary small">Màu:</label>
+                          <label className="block mb-1">Màu sắc:</label>
                           <select
-                            className="form-select form-select-sm"
-                            style={{ width: "110px" }}
                             value={p.color}
                             onChange={(e) =>
-                              handleSelectChange(p.id, "color", e.target.value)
+                              handleSelectChange(
+                                p.cartItemId,
+                                "color",
+                                e.target.value
+                              )
                             }
+                            className="border rounded px-2 py-1"
                           >
                             {opt?.colors?.map((c) => (
                               <option key={c.id} value={c.name}>
@@ -177,57 +171,85 @@ export default function Cart() {
                         </div>
                       </div>
 
-                      {/* Số lượng */}
-                      <div className="mt-2">
-                        <label className="me-2 text-secondary small">Số lượng:</label>
-                        <input
-                          type="number"
-                          min="1"
-                          value={p.quantity}
-                          className="form-control form-control-sm d-inline-block"
-                          style={{ width: "80px" }}
-                          onChange={(e) =>
-                            handleQuantityChange(p.id, e.target.value)
+                      {/* QUANTITY */}
+                      <div className="mt-3 flex items-center gap-2">
+                        <span className="text-gray-600 text-sm">Số lượng:</span>
+
+                        <button
+                          onClick={() =>
+                            handleQuantityChange(
+                              p.cartItemId,
+                              p.quantity - 1
+                            )
                           }
-                        />
+                          disabled={p.quantity <= 1}
+                          className="px-3 py-1 border rounded"
+                        >
+                          -
+                        </button>
+
+                        <span className="px-4 py-1 border rounded bg-gray-100">
+                          {p.quantity}
+                        </span>
+
+                        <button
+                          onClick={() =>
+                            handleQuantityChange(
+                              p.cartItemId,
+                              p.quantity + 1
+                            )
+                          }
+                          className="px-3 py-1 border rounded"
+                        >
+                          +
+                        </button>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Giá và nút xóa */}
-                  <div className="text-end mt-3 mt-md-0">
-                    <span className="d-block fw-semibold text-success mb-2">
+                    {/* PRICE */}
+                    <div className="text-lg font-semibold text-red-600 mt-4">
                       {formatPrice(p.price * p.quantity)}
-                    </span>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() =>
-                        removeFromCart({
-                          id: p.id,
-                          size_id: p.size_id,
-                          color_id: p.color_id,
-                        })
-                      }
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
+                    </div>
                   </div>
-                </li>
+                </div>
               );
             })}
-          </ul>
+          </div>
 
-          {/* Tổng cộng */}
-          <div className="text-end mt-4">
-            <h4 className="fw-bold">
-              Tổng cộng:{" "}
-              <span className="text-success">{formatPrice(total)}</span>
-            </h4>
-            <Link to="/checkout" className="btn btn-success mt-3 px-4 py-2">
-              Tiến hành thanh toán
+          {/* RIGHT: SUMMARY */}
+          <div className="border p-5 rounded-lg h-fit shadow-sm bg-white">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-lg">TỔNG ĐƠN HÀNG</h3>
+              <p className="font-bold text-lg">
+                {totalQuantity} SẢN PHẨM
+              </p>
+            </div>
+
+            <div className="flex justify-between text-gray-700 mb-3">
+              <span>Tổng cộng</span>
+              <span>{formatPrice(total)}</span>
+            </div>
+
+            <div className="border-t pt-4 mt-4 font-bold text-xl text-red-600 flex justify-between">
+              <span>TỔNG</span>
+              <span>{formatPrice(total)}</span>
+            </div>
+
+            <Link
+              to="/checkout"
+              className="block bg-red-600 text-white text-center mt-6 py-3 rounded-md font-medium"
+            >
+              THANH TOÁN
+            </Link>
+
+            <Link
+              to="/"
+              className="block text-center mt-4 py-2 border rounded-md"
+            >
+              TIẾP TỤC MUA SẮM
             </Link>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

@@ -1,22 +1,29 @@
 // controllers/productController.js
-const { getAllProducts, getRepresentativeProduct, getProductOptionsById } = require('../models/productModel');
+const {
+  getAllProducts,
+  getRepresentativeProduct,
+  getProductOptionsById,
+  getProductById,
+} = require("../models/productModel");
 
 // ✅ Lấy sản phẩm đại diện
 async function getRepresentative(req, res) {
   const { category_id } = req.query;
   if (!category_id) {
-    return res.status(400).json({ message: 'Thiếu category_id' });
+    return res.status(400).json({ message: "Thiếu category_id" });
   }
 
   try {
     const product = await getRepresentativeProduct(category_id);
     if (!product) {
-      return res.status(404).json({ message: 'Không có sản phẩm đại diện cho danh mục này' });
+      return res
+        .status(404)
+        .json({ message: "Không có sản phẩm đại diện cho danh mục này" });
     }
     res.json(product);
   } catch (err) {
-    console.error('❌ Lỗi khi lấy sản phẩm đại diện:', err);
-    res.status(500).json({ message: 'Lỗi server khi lấy sản phẩm đại diện' });
+    console.error("❌ Lỗi khi lấy sản phẩm đại diện:", err);
+    res.status(500).json({ message: "Lỗi server khi lấy sản phẩm đại diện" });
   }
 }
 
@@ -28,8 +35,8 @@ async function getProducts(req, res) {
     const products = await getAllProducts(category_id);
     res.json(products);
   } catch (err) {
-    console.error('❌ Lỗi khi lấy sản phẩm:', err);
-    res.status(500).json({ message: 'Server error' });
+    console.error("❌ Lỗi khi lấy sản phẩm:", err);
+    res.status(500).json({ message: "Server error" });
   }
 }
 
@@ -41,9 +48,25 @@ async function getProductOptions(req, res) {
     const options = await getProductOptionsById(productId);
     res.json(options);
   } catch (err) {
-    console.error('❌ Lỗi khi lấy size/màu:', err);
-    res.status(500).json({ message: 'Lỗi server khi lấy size và màu' });
+    console.error("❌ Lỗi khi lấy size/màu:", err);
+    res.status(500).json({ message: "Lỗi server khi lấy size và màu" });
   }
 }
 
-module.exports = { getRepresentative, getProducts, getProductOptions };
+async function getProduct(req, res) {
+  const id = req.params.id;
+
+  try {
+    const product = await getProductById(id);
+    if (!product) {
+      return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
+    }
+
+    res.json(product);
+  } catch (err) {
+    console.error("❌ Lỗi khi lấy sản phẩm:", err);
+    res.status(500).json({ message: "Server error khi lấy sản phẩm" });
+  }
+}
+
+module.exports = { getRepresentative, getProducts, getProductOptions, getProduct};
