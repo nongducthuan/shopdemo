@@ -48,7 +48,7 @@ export default function Admin() {
 
       <div className="row g-4">
         {/* Quản lý Banner */}
-        <div className="col-md-4">
+        <div className="col-md-3">
           <div
             className="card shadow-sm text-center p-4 dashboard-card d-flex flex-column align-items-center"
             style={{ cursor: "pointer" }}
@@ -61,7 +61,7 @@ export default function Admin() {
         </div>
 
         {/* Quản lý Sản phẩm */}
-        <div className="col-md-4">
+        <div className="col-md-3">
           <div
             className="card shadow-sm text-center p-4 dashboard-card d-flex flex-column align-items-center"
             style={{ cursor: "pointer" }}
@@ -74,7 +74,7 @@ export default function Admin() {
         </div>
 
         {/* Quản lý Đơn hàng */}
-        <div className="col-md-4">
+        <div className="col-md-3">
           <div
             className="card shadow-sm text-center p-4 dashboard-card d-flex flex-column align-items-center"
             style={{ cursor: "pointer" }}
@@ -83,6 +83,19 @@ export default function Admin() {
             <i className="fa-solid fa-receipt fa-3x mb-3 text-warning icon-management"></i>
             <h5 className="card-title">Quản lý Đơn hàng</h5>
             <p className="text-muted">Đơn hàng hiện tại: {stats.orders}</p>
+          </div>
+        </div>
+
+        {/* Thống kê */}
+        <div className="col-md-3">
+          <div
+            className="card shadow-sm text-center p-4 dashboard-card d-flex flex-column align-items-center"
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/admin/report")}
+          >
+            <i className="fa-solid fa-chart-line fa-3x mb-3 text-info icon-management"></i>
+            <h5 className="card-title">Báo cáo Thống kê</h5>
+            <p className="text-muted">Xem biểu đồ và báo cáo hệ thống</p>
           </div>
         </div>
       </div>

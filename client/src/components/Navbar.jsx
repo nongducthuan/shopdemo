@@ -196,8 +196,13 @@ export default function Navbar() {
               onMouseEnter={handleAdminEnter}
               onMouseLeave={handleAdminLeave}
             >
-              <i className="fa-solid fa-gear text-gray-700 hover:text-violet-600 cursor-pointer transition text-lg"></i>
+              {/* Icon bánh răng */}
+              <i
+                className="fa-solid fa-gear text-gray-700 hover:text-violet-600 cursor-pointer transition text-lg"
+                onClick={() => navigate("/admin")}
+              ></i>
 
+              {/* Dropdown menu */}
               {adminMenuOpen && (
                 <div className="absolute right-0 bg-white rounded-lg shadow-md mt-2 py-2 w-44 animate-fadeIn">
                   <div
@@ -217,6 +222,12 @@ export default function Navbar() {
                     onClick={() => navigate("/admin/orders")}
                   >
                     Quản lý Đơn hàng
+                  </div>
+                  <div
+                    className="px-4 py-2 hover:bg-violet-50 hover:text-violet-700 cursor-pointer"
+                    onClick={() => navigate("/admin/report")}
+                  >
+                    Báo cáo thống kê
                   </div>
                 </div>
               )}

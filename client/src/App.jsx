@@ -16,7 +16,8 @@ import AdminProductDetail from "./pages/AdminProductDetail";
 import Category from "./pages/Category";
 import BannerManager from "./pages/BannerManager";
 import ProductManager from "./pages/ProductManager";
-import OrderManager from "./pages/OrderManager"; 
+import OrderManager from "./pages/OrderManager";
+import AdminReport from "./pages/AdminReport";
 import "./assets/style/style.css";
 
 function App() {
@@ -82,6 +83,16 @@ function App() {
             element={
               <ProtectedRoute roleRequired="admin">
                 <AdminProductDetail />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Trang thống kê */}
+          <Route
+            path="/admin/report"
+            element={
+              <ProtectedRoute roleRequired="admin">
+                <AdminReport />
               </ProtectedRoute>
             }
           />
