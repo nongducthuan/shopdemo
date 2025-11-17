@@ -74,7 +74,9 @@ export default function BannerManager() {
 
   return (
     <div className="container mt-4">
-      <h2>Quản lý Banner</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-gray-800">
+        QUẢN LÝ BANNER
+      </h2>
       <form onSubmit={handleBannerSubmit} className="row g-3 mb-4">
         <div className="col-md-3">
           <input

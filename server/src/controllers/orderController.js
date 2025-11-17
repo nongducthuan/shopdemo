@@ -51,7 +51,7 @@ async function createOrderController(req, res) {
     const orderId = await createOrder(conn, userId, Number(totalPrice), address, phone);
     await addOrderItems(conn, orderId, items);
 
-    // 🔹 Trừ tồn kho theo size
+    /* 🔹 Trừ tồn kho theo size
     for (const it of items) {
       const [result] = await conn.query(
         `UPDATE product_sizes 
@@ -63,7 +63,7 @@ async function createOrderController(req, res) {
       if (result.affectedRows === 0) {
         throw new Error(`Không đủ tồn kho cho size ID ${it.size_id}`);
       }
-    }
+    } */
 
     // 🔹 Cập nhật tổng stock cho sản phẩm (tổng size)
     await conn.query(`

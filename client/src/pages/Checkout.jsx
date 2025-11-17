@@ -14,12 +14,6 @@ export default function Checkout() {
     0
   );
 
-  const formatCurrency = (amount) =>
-    Number(amount).toLocaleString("vi-VN", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }) + " đ";
-
   const handleCheckout = async () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));

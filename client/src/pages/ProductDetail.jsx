@@ -14,6 +14,19 @@ export default function ProductDetail() {
   const [mainImage, setMainImage] = useState("");
   const [quantity, setQuantity] = useState(1);
 
+  const refreshStock = async () => {
+    const res = await fetch(`${backendUrl}/products/${id}`);
+    const data = await res.json();
+    setProduct(data);
+    if (data.colors?.length > 0) {
+      setSelectedColor(data.colors[0]);
+      setSelectedSize(data.colors[0].sizes?.[0] || null);
+    } else {
+      setSelectedColor(null);
+      setSelectedSize(null);
+    }
+  };
+
   const formatPrice = (price) => Number(price).toLocaleString("vi-VN");
 
   // Fetch product detail

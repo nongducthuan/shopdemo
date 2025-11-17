@@ -18,6 +18,10 @@ export default function OrderManager() {
 
   useEffect(() => {
     fetchOrders();
+    document.body.style.overflow = "visible";
+    return () => {
+      document.body.style.overflow = "hidden";
+    };
   }, []);
 
   const handleChangeStatus = async (orderId, status) => {
@@ -31,78 +35,105 @@ export default function OrderManager() {
       fetchOrders();
     } catch (err) {
       console.error(err);
+      alert(err.response?.data?.message || err.message);
     }
   };
 
   const formatCurrency = (amount) =>
     Number(amount).toLocaleString("vi-VN") + " đ";
 
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Đã hủy":
+        return "#ffb3b3";
+      case "Đang giao hàng":
+        return "#b3e5fc";
+      case "Đã giao hàng":
+        return "#c8e6c9";
+      case "Đã xác nhận":
+        return "#fff0b3";
+      default:
+        return "#e0e0e0";
+    }
+  };
+
   return (
-    <div className="container mt-4">
-      <h2>Quản lý Đơn hàng</h2>
+    <div className="max-w-screen-xl mx-auto px-4 mt-4">
+      <h2 className="text-center text-2xl sm:text-3xl font-bold mb-8 text-gray-800">
+        QUẢN LÝ ĐƠN HÀNG
+      </h2>
+
       {orders.length === 0 ? (
         <p>Chưa có đơn hàng nào</p>
       ) : (
-        <div className="row">
-          {orders.map((order) => (
-            <div key={order.id} className="col-md-4 col-12 mb-3">
-              <div className="card shadow-sm h-100 border-0 rounded-3">
-                {/* HEADER */}
-                <div className="border-bottom px-3 py-2 d-flex justify-content-between align-items-center">
-                  <h5 className="mb-0 fw-bold">Đơn #{order.id}</h5>
-                  <span
-                    className="badge px-3 py-2"
-                    style={{
-                      fontSize: "0.8rem",
-                      backgroundColor:
-                        order.status === "Đã hủy"
-                          ? "#ffb3b3"
-                          : order.status === "Đang giao hàng"
-                          ? "#b3e5fc"
-                          : order.status === "Đã giao hàng"
-                          ? "#c8e6c9"
-                          : order.status === "Đã xác nhận"
-                          ? "#fff0b3"
-                          : "#e0e0e0",
-                      color: "#333",
-                    }}
-                  >
-                    {order.status}
-                  </span>
-                </div>
-
-                {/* BODY */}
-                <div className="card-body d-flex flex-column">
-                  <div className="mb-2 text-muted small">
-                    <p className="mb-1">
-                      <strong>Người đặt:</strong> {order.user_name}
-                    </p>
-                    <p className="mb-1">
-                      <strong>Địa chỉ:</strong> {order.address}
-                    </p>
-                    <p className="mb-2 fw-semibold text-danger">
-                      Tổng tiền:{" "}
-                      {formatCurrency(order.total_price)}
-                    </p>
-                  </div>
-
-                  {/* ITEMS */}
-                  <ul className="small ps-3 mb-3" style={{ lineHeight: "1.4" }}>
-                    {order.items.map((i) => (
-                      <li key={i.id}>
-                        {i.product_name} × {i.quantity}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* SELECT STATUS (luôn ở cuối card) */}
-                  <div className="mt-auto">
+        <div className="table-responsive">
+          <table className="table table-bordered align-middle">
+            <thead className="table-light text-center align-middle">
+              <tr>
+                <th>Đơn #</th>
+                <th>Người đặt</th>
+                <th>Địa chỉ</th>
+                <th>Tổng tiền</th>
+                <th>Sản phẩm</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody className="text-center ">
+              {orders.map((order) => (
+                <tr key={order.id}>
+                  <td className="fw-bold">{order.id}</td>
+                  <td>{order.user_name}</td>
+                  <td>{order.address}</td>
+                  <td className="text-danger fw-semibold">
+                    {formatCurrency(order.total_price)}
+                  </td>
+                  <td>
+                    <ul className="mb-0 ps-0" style={{ lineHeight: "1.4", listStyle: "none" }}>
+                      {order.items.map((item) => (
+                        <li
+                          key={item.id}
+                          className="d-flex align-items-center mb-2"
+                          style={{ gap: "0.5rem" }}
+                        >
+                          <div>
+                            <strong>{item.product_name}</strong>
+                            {item.size_name && <span> - Size: {item.size_name}</span>}
+                            {item.color_name && (
+                              <span>
+                                {" "}
+                                - Màu: {item.color_name}
+                                {item.color_code && (
+                                  <span
+                                    style={{
+                                      display: "inline-block",
+                                      width: "12px",
+                                      height: "12px",
+                                      backgroundColor: item.color_code,
+                                      border: "1px solid #ccc",
+                                      marginLeft: "4px",
+                                      marginRight: "4px",
+                                    }}
+                                  ></span>
+                                )}
+                              </span>
+                            )}
+                            - Số lượng: {item.quantity}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td>
                     <select
                       value={order.status}
                       onChange={(e) =>
                         handleChangeStatus(order.id, e.target.value)
                       }
-                      className="form-select form-select-sm"
+                      className="form-select form-select-sm min-w-[140px]"
+                      style={{
+                        backgroundColor: getStatusColor(order.status),
+                        color: "#333",
+                      }}
                     >
                       <option value="Chờ xác nhận">Chờ xác nhận</option>
                       <option value="Đã xác nhận">Đã xác nhận</option>
@@ -110,11 +141,11 @@ export default function OrderManager() {
                       <option value="Đã giao hàng">Đã giao hàng</option>
                       <option value="Đã hủy">Đã hủy</option>
                     </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

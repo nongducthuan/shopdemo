@@ -330,6 +330,7 @@ form button.btn-primary:hover {
 }
 
 @media (min-width: 769px) {
+
   html,
   body {
     padding-top: 35px;

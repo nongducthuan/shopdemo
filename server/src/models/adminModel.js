@@ -176,21 +176,82 @@ async function getAllOrders() {
 
   for (const order of orders) {
     const [items] = await pool.query(`
-      SELECT 
-        oi.*, 
-        p.name AS product_name 
-      FROM order_items oi 
-      JOIN products p ON oi.product_id = p.id 
-      WHERE order_id = ?
-    `, [order.id]);
+  SELECT 
+    oi.*,
+    p.name AS product_name,
+    pc.color_name,
+    pc.color_code,
+    ps.size AS size_name
+  FROM order_items oi
+  JOIN products p ON oi.product_id = p.id
+  LEFT JOIN product_colors pc ON oi.color_id = pc.id
+  LEFT JOIN product_sizes ps ON oi.size_id = ps.id
+  WHERE oi.order_id = ?
+`, [order.id]);
     order.items = items;
   }
   return orders;
 }
 
-async function updateOrderStatus(orderId, status) {
-  const [result] = await pool.query("UPDATE orders SET status=? WHERE id=?", [status, orderId]);
-  return result.affectedRows;
+async function updateOrderStatus(orderId, newStatus) {
+  const conn = await pool.getConnection(); // lấy connection để dùng transaction
+  try {
+    await conn.beginTransaction();
+
+    // Lấy đơn
+    const [orders] = await conn.query("SELECT * FROM orders WHERE id=?", [orderId]);
+    const order = orders[0];
+    if (!order) {
+      await conn.rollback();
+      return 0;
+    }
+
+    const oldStatus = order.status;
+
+    // Lấy items
+    const [items] = await conn.query("SELECT * FROM order_items WHERE order_id=?", [orderId]);
+
+    for (const item of items) {
+      const [sizes] = await conn.query("SELECT stock FROM product_sizes WHERE id=?", [item.size_id]);
+      const currentStock = sizes[0]?.stock ?? 0;
+
+      // Trừ stock khi chuyển sang "Đang giao hàng" hoặc "Đã giao hàng" nếu chưa trừ
+      if (
+        ["Chờ xác nhận", "Đã xác nhận", "Đã hủy"].includes(oldStatus) &&
+        ["Đang giao hàng", "Đã giao hàng"].includes(newStatus)
+      ) {
+        if (currentStock < item.quantity) {
+          throw new Error(`Sản phẩm ID ${item.product_id} không đủ trong kho (còn ${currentStock}).`);
+        }
+        await conn.query(
+          "UPDATE product_sizes SET stock = stock - ? WHERE id=?",
+          [item.quantity, item.size_id]
+        );
+      }
+
+      // Cộng lại stock khi chuyển sang "Chờ xác nhận", "Đã xác nhận", "Đã hủy" nếu đã trừ
+      if (
+        ["Chờ xác nhận", "Đã xác nhận", "Đã hủy"].includes(newStatus) &&
+        ["Đang giao hàng", "Đã giao hàng"].includes(oldStatus)
+      ) {
+        await conn.query(
+          "UPDATE product_sizes SET stock = stock + ? WHERE id=?",
+          [item.quantity, item.size_id]
+        );
+      }
+    }
+
+    // Cập nhật trạng thái đơn
+    const [result] = await conn.query("UPDATE orders SET status=? WHERE id=?", [newStatus, orderId]);
+
+    await conn.commit();
+    return result.affectedRows;
+  } catch (err) {
+    await conn.rollback();
+    throw err;
+  } finally {
+    conn.release();
+  }
 }
 
 // =================== BANNERS ===================
